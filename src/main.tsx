@@ -6,13 +6,12 @@ import App from "./App";
 
 const rootElement = document.getElementById("root") as HTMLElement;
 
-
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <BrowserRouter>
-          <ChakraProvider>
-            <App />
-          </ChakraProvider>
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );
