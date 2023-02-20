@@ -13,7 +13,7 @@
     "dev": "ts-node server.ts",
     "build": "tsc && vite build",
     "build:client": "vite build --outDir dist/client",
-    "build:server": "vite build --outDir dist/server --ssr src/entry-server.ts",
+    "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx",
     "preview": "vite preview",
     "format": "prettier ./**/*.{ts,tsx,js,jsx,css,scss,md,json} --write",
     "lint": "eslint ./**/*.{ts,tsx,js,jsx} --fix",
