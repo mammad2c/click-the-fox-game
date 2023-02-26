@@ -1,9 +1,9 @@
 import { renderComponent, screen, fireEvent } from "@/tests/render-component";
-import { FormInitial } from "./types";
+import { FormConfig } from "./types";
 import { useForm } from "./use-form";
 import { number, required } from "./validations";
 
-const form: FormInitial = {
+const form: FormConfig = {
   values: {
     name: "",
     amount: "",

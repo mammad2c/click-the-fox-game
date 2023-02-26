@@ -1,19 +1,19 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type ValidationFunction = (value: unknown) => {
   isValid: boolean;
   message: string;
 };
 
-export type FormErrors = Record<string, string>;
+export type FormValues = Record<string, any>;
 
-export type FormValues = Record<
-  string,
-  string | number | readonly string[] | undefined
->;
+export type FormErrors<Values = FormValues> = {
+  [K in keyof Values]?: string;
+};
 
 export type FormValidations = Record<string, ValidationFunction[]>;
 
-export type FormInitial = {
-  values: FormValues;
+export type FormConfig<Values extends FormValues = FormValues> = {
+  values: Values;
   validations?: FormValidations;
   onSubmit: ({
     form,
@@ -22,7 +22,7 @@ export type FormInitial = {
     form: Omit<InitialForm, "onSubmit" | "validations">;
     setForm: React.Dispatch<
       React.SetStateAction<{
-        values: FormValues;
+        values: Values;
         errors: FormErrors;
       }>
     >;

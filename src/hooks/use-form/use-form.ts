@@ -1,13 +1,13 @@
 import { useState } from "react";
 import type {
   FormErrors,
-  FormInitial,
+  FormConfig,
   FormValidations,
   FormValues,
 } from "./types";
 
 const runValidations = (
-  values: FormValues = {},
+  values: FormConfig["values"],
   validations: FormValidations = {},
 ) => {
   const errors: FormErrors = {};
@@ -31,17 +31,13 @@ const runValidations = (
   return errors;
 };
 
-const useForm = ({
-  values = {},
-  validations = {},
-  onSubmit = () => {
-    //
-  },
-}: FormInitial) => {
+const useForm = <Values extends FormValues = FormValues>(
+  formConfig: FormConfig<Values>,
+) => {
   const [form, setForm] = useState<{
-    values: FormInitial["values"];
-    errors: FormErrors;
-  }>({ values, errors: {} });
+    values: Values;
+    errors: FormErrors<Values>;
+  }>({ values: formConfig.values, errors: {} });
 
   const setErrors = (errors = {}) => {
     setForm((currentForm) => {
@@ -75,7 +71,7 @@ const useForm = ({
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const errors = runValidations(form.values, validations);
+    const errors = runValidations(form.values, formConfig.validations);
 
     setErrors(errors);
 
@@ -85,8 +81,8 @@ const useForm = ({
       return;
     }
 
-    if (typeof onSubmit === "function") {
-      onSubmit({ form, setForm });
+    if (typeof formConfig.onSubmit === "function") {
+      formConfig.onSubmit({ form, setForm });
     }
   };
 
