@@ -1,5 +1,19 @@
-import { Button as UIButton } from "@chakra-ui/react";
+import {
+  Button as UIButton,
+  ButtonProps as UIButtonProps,
+} from "@chakra-ui/react";
+import { NavLink, To } from "react-router-dom";
 
-const Button = UIButton;
+interface ButtonProps extends UIButtonProps {
+  to?: To;
+}
+
+const Button = ({ to, ...restProps }: ButtonProps) => {
+  if (to) {
+    return <UIButton as={NavLink} {...restProps} to={to} />;
+  }
+
+  return <UIButton {...restProps} />;
+};
 
 export { Button };
