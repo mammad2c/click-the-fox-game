@@ -1,0 +1,10 @@
+# Countdown
+
+Use this component to create a countdown.
+
+## Props
+
+| Props    | Type    |             Description             | Required | Default | Example | Output   |
+| -------- | ------- | :---------------------------------: | -------- | ------- | ------- | -------- |
+| duration | number  |   countdown duration in seconds.    | Yes      | -       | 500     | 00:05:00 |
+| canStart | boolean | control can countdown start or not. | No       | `false` | -       | -        |
