@@ -1,3 +1,32 @@
-const Game = () => <div>Game page</div>;
+import { Box } from "@/ui";
+import { SetupGameForm } from "./components";
+import { useGameController } from "./controller";
+
+const Game = () => {
+  const { status } = useGameController();
+
+  return (
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      minHeight="100vh"
+      flexDirection="column"
+    >
+      <Box
+        border="2px"
+        rounded={4}
+        width={{
+          base: "100%",
+          sm: 300,
+        }}
+        padding={8}
+        textAlign="center"
+      >
+        {status === "setup-form" && <SetupGameForm />}
+      </Box>
+    </Box>
+  );
+};
 
 export { Game };
