@@ -2,10 +2,18 @@ import { renderComponent, screen } from "@/tests/render-component";
 import { Countdown } from "./countdown";
 
 describe("Countdown", () => {
-  it("should render in the correct format based on seconds", () => {
+  it("should render in the correct format based on the time where it is based on second", () => {
+    // 30 seconds
     const { rerender } = renderComponent(<Countdown time={30} />);
-
     expect(screen.getByText("00:00:30")).toBeTruthy();
+
+    // 1 minute
+    rerender(<Countdown time={60} />);
+    expect(screen.getByText("00:01:00")).toBeTruthy();
+
+    // 59 seconds
+    rerender(<Countdown time={59} />);
+    expect(screen.getByText("00:00:59")).toBeTruthy();
 
     // 1 minute and 19 seconds
     rerender(<Countdown time={79} />);
