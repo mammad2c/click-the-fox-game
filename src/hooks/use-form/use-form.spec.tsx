@@ -1,9 +1,4 @@
-import {
-  renderComponent,
-  screen,
-  fireEvent,
-  act,
-} from "@/tests/render-component";
+import { renderComponent, screen, fireEvent } from "@/tests/render-component";
 import { FormInitial } from "./types";
 import { useForm } from "./use-form";
 import { number, required } from "./validations";
