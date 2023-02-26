@@ -27,9 +27,10 @@ const Home = () => {
             variant="outline"
             minWidth={{
               base: "100%",
-              sm: "25%",
+              sm: 200,
             }}
             mb={4}
+            to="/game"
           >
             Start game
           </Button>
@@ -40,7 +41,7 @@ const Home = () => {
             variant="outline"
             minWidth={{
               base: "100%",
-              sm: "25%",
+              sm: 200,
             }}
           >
             Scoreboard
