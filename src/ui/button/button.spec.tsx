@@ -1,5 +1,5 @@
 import { renderComponent, screen } from "@/tests/render-component";
-import { Button } from ".";
+import { Button } from "./button";
 
 describe("Button", () => {
   it("should render react-router NavLink if to props is set", () => {

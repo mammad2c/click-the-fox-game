@@ -1,5 +1,4 @@
-import Game from "@/pages/game";
-import Home from "@/pages/home";
+import { Home, Game } from "@/pages";
 
 const routes = [
   {
