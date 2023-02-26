@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 const createStore = <State = object>(initialState: State) => {
   type NewStateFunctionType = (currState: State) => State;
@@ -29,17 +29,22 @@ const createStore = <State = object>(initialState: State) => {
   };
 
   const useSelector = (selector = (storeState: State) => storeState) => {
-    const [localState, setLocalState] = useState<State>(selector(getState()));
+    // const [localState, setLocalState] = useState<State>(selector(getState()));
+    const localState = useSyncExternalStore(
+      subscribe,
+      () => selector(getState()),
+      () => selector(getState()),
+    );
 
-    useEffect(() => {
-      const unsubscribe = subscribe((state) => setLocalState(selector(state)));
+    // useEffect(() => {
+    //   const unsubscribe = subscribe((state) => setLocalState(selector(state)));
 
-      return () => {
-        if (unsubscribe) {
-          unsubscribe();
-        }
-      };
-    }, []);
+    //   return () => {
+    //     if (unsubscribe) {
+    //       unsubscribe();
+    //     }
+    //   };
+    // }, []);
 
     return localState;
   };
