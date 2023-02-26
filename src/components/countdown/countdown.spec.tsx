@@ -44,6 +44,28 @@ describe("Countdown", () => {
     expect(screen.getByText("20:30:30")).toBeTruthy();
   });
 
+  it("should start or stop the countdown based on canStart props", () => {
+    const { rerender } = renderComponent(<Countdown duration={30} />);
+
+    vi.useFakeTimers();
+
+    // after 15 seconds, it should not be started
+    act(() => {
+      vi.advanceTimersByTime(15 * 1000);
+    });
+
+    expect(screen.getByText("00:00:30")).toBeTruthy();
+
+    rerender(<Countdown duration={30} canStart={true} />);
+
+    act(() => {
+      vi.advanceTimersByTime(15 * 1000);
+    });
+
+    expect(screen.queryByText("00:00:30")).not.toBeTruthy();
+    expect(screen.getByText("00:00:15")).toBeTruthy();
+  });
+
   it("should start countdown and continue until it reaches 0", () => {
     vi.useFakeTimers();
 
