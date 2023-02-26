@@ -19,7 +19,7 @@ export type FormConfig<Values extends FormValues = FormValues> = {
     form,
     setForm,
   }: {
-    form: Omit<InitialForm, "onSubmit" | "validations">;
+    form: Omit<FormConfig<Values>, "onSubmit" | "validations">;
     setForm: React.Dispatch<
       React.SetStateAction<{
         values: Values;
