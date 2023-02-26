@@ -47,10 +47,18 @@ describe("Countdown", () => {
   it("should start countdown and continue until it reaches 0", () => {
     vi.useFakeTimers();
 
-    // 20 minutes and 40 seconds
+    // 30 seconds
     const { rerender } = renderComponent(
       <Countdown duration={30} canStart={true} />,
     );
+
+    // first check 15 seconds passed
+    act(() => {
+      vi.advanceTimersByTime(15 * 1000);
+    });
+    expect(screen.getByText("00:00:15")).toBeTruthy();
+
+    // now check it reaches 0 and stop
     act(() => {
       vi.advanceTimersByTime(30 * 1000);
     });
@@ -58,8 +66,16 @@ describe("Countdown", () => {
 
     // 20 hours and 30 minutes and 30 seconds
     rerender(<Countdown duration={73830} canStart={true} />);
+
+    // check 10 hours passed
     act(() => {
-      vi.advanceTimersByTime(73830 * 1000);
+      vi.advanceTimersByTime(36000 * 1000);
+    });
+    expect(screen.getByText("10:30:30")).toBeTruthy();
+
+    // now check it reaches 0 and stop
+    act(() => {
+      vi.advanceTimersByTime(40000 * 1000);
     });
     expect(screen.getByText("00:00:00")).toBeTruthy();
   });
