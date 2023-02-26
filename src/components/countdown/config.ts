@@ -1,5 +1,6 @@
 import { CountdownProps } from "./types";
 
-export const defaultCountdownPropsValue: Partial<CountdownProps> = {
+export const defaultCountdownPropsValue: CountdownProps = {
+  duration: 0,
   canStart: false,
 };
