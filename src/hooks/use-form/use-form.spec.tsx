@@ -19,16 +19,16 @@ const form: FormInitial = {
 };
 
 const TestComponent = () => {
-  const { values, errors, handleInputChange, handleSubmit } = useForm(form);
+  const { values, errors, handleOnInput, handleOnSubmit } = useForm(form);
 
   return (
-    <form onSubmit={handleSubmit} data-testid="form">
+    <form onSubmit={handleOnSubmit} data-testid="form">
       <div>
         <label htmlFor="name">Name:</label>
         <input
           id="name"
           name="name"
-          onInput={handleInputChange}
+          onInput={handleOnInput}
           value={values.name}
         />
         {errors.name && <span>{errors.name}</span>}
@@ -39,7 +39,7 @@ const TestComponent = () => {
         <input
           id="amount"
           name="amount"
-          onInput={handleInputChange}
+          onInput={handleOnInput}
           value={values.amount}
         />
         {errors.amount && <span>{errors.amount}</span>}
@@ -50,7 +50,7 @@ const TestComponent = () => {
         <input
           id="description"
           name="description"
-          onInput={handleInputChange}
+          onInput={handleOnInput}
           value={values.description}
         />
         {errors.description && <span>{errors.description}</span>}

@@ -14,7 +14,7 @@ export type FormValidations = Record<string, ValidationFunction[]>;
 
 export type FormInitial = {
   values: FormValues;
-  validations: FormValidations;
+  validations?: FormValidations;
   onSubmit: ({
     form,
     setForm,

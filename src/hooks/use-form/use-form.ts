@@ -6,10 +6,13 @@ import type {
   FormValues,
 } from "./types";
 
-const runValidations = (values: FormValues, validations: FormValidations) => {
+const runValidations = (
+  values: FormValues = {},
+  validations: FormValidations = {},
+) => {
   const errors: FormErrors = {};
 
-  Object.keys(validations).forEach((key) => {
+  for (const key in validations) {
     const fieldValidations = validations[key];
 
     fieldValidations.forEach((validationFn) => {
@@ -17,13 +20,13 @@ const runValidations = (values: FormValues, validations: FormValidations) => {
         return;
       }
 
-      const result = validationFn(values[key]);
+      const { isValid, message } = validationFn(values[key]);
 
-      if (!result.isValid) {
-        errors[key] = result.message;
+      if (!isValid) {
+        errors[key] = message;
       }
     });
-  });
+  }
 
   return errors;
 };
@@ -39,20 +42,6 @@ const useForm = ({
     values: FormInitial["values"];
     errors: FormErrors;
   }>({ values, errors: {} });
-
-  const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const { name, value } = e.target as HTMLInputElement;
-
-    setForm((currentForm) => {
-      return {
-        ...currentForm,
-        values: {
-          ...currentForm.values,
-          [name]: value,
-        },
-      };
-    });
-  };
 
   const setErrors = (errors = {}) => {
     setForm((currentForm) => {
@@ -75,8 +64,17 @@ const useForm = ({
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleOnInput = (e: React.FormEvent<HTMLInputElement>) => {
+    const { name, value } = e.target as HTMLInputElement;
+
+    setValues({
+      [name]: value,
+    });
+  };
+
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const errors = runValidations(form.values, validations);
 
     setErrors(errors);
@@ -95,9 +93,10 @@ const useForm = ({
   return {
     values: form.values,
     errors: form.errors,
-    handleInputChange,
-    handleSubmit,
+    handleOnInput,
+    handleOnSubmit,
     setValues,
+    setErrors,
   };
 };
 
