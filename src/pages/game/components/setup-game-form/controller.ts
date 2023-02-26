@@ -1,17 +1,15 @@
 import { useForm, validations } from "@/hooks";
 import { gameStore } from "@/stores";
 
-const initialFormValues = {
-  name: "",
-};
-
 const formValidations = {
   name: [validations.required],
 };
 
 const useSetupGameFormController = () => {
   const { values, errors, handleOnInput, handleOnSubmit } = useForm({
-    values: initialFormValues,
+    values: {
+      name: gameStore.getState().name,
+    },
     validations: formValidations,
     onSubmit: ({ form }) => {
       gameStore.setName(form.values.name);
