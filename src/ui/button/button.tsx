@@ -1,10 +1,5 @@
-import {
-  Button as UIButton,
-  ButtonProps as UIButtonProps,
-} from "@chakra-ui/react";
+import { Button as UIButton } from "@chakra-ui/react";
 
-const Button = (props: UIButtonProps) => {
-  return <UIButton {...props} />;
-};
+const Button = UIButton;
 
 export { Button };

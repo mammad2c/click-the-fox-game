@@ -1,7 +1,5 @@
-import { Text as UIText, TextProps as UITextProps } from "@chakra-ui/react";
+import { Text as UIText } from "@chakra-ui/react";
 
-const Text = (props: UITextProps) => {
-  return <UIText {...props} />;
-};
+const Text = UIText;
 
 export { Text };

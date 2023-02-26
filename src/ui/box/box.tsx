@@ -1,7 +1,5 @@
-import { Box as UIBox, BoxProps as UIBoxProps } from "@chakra-ui/react";
+import { Box as UIBox } from "@chakra-ui/react";
 
-const Box = (props: UIBoxProps) => {
-  return <UIBox {...props} />;
-};
+const Box = UIBox;
 
 export { Box };

@@ -1,10 +1,5 @@
-import {
-  Container as UIContainer,
-  ContainerProps as UIContainerProps,
-} from "@chakra-ui/react";
+import { Container as UIContainer } from "@chakra-ui/react";
 
-const Container = (props: UIContainerProps) => {
-  return <UIContainer maxW="none" {...props} />;
-};
+const Container = UIContainer;
 
 export { Container };
