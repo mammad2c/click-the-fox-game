@@ -1,8 +1,9 @@
 import { Box } from "@/ui";
+import { defaultCountdownPropsValue } from "./config";
 import { useCountdownController } from "./controller";
 import type { CountdownProps } from "./types";
 
-const Countdown = (props: CountdownProps) => {
+const Countdown = (props: CountdownProps = defaultCountdownPropsValue) => {
   const { generateFormattedTime } = useCountdownController(props);
 
   const formattedTime = generateFormattedTime();

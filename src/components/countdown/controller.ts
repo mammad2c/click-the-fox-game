@@ -1,12 +1,20 @@
-import { CountdownProps } from "./types";
+import { useEffect, useRef, useState } from "react";
+import { defaultCountdownPropsValue } from "./config";
+import type { CountdownProps } from "./types";
 
-const useCountdownController = ({ time }: CountdownProps) => {
+const useCountdownController = ({
+  duration,
+  canStart,
+}: CountdownProps = defaultCountdownPropsValue) => {
+  const [remainDuration, setRemainDuration] = useState(duration);
+  const countdownIntervalId = useRef<NodeJS.Timer | null>(null);
+
   const generateFormattedTime = () => {
-    if (!time || time < 0) {
+    if (!remainDuration || remainDuration < 0) {
       return "00:00:00";
     }
 
-    let totalSeconds = time;
+    let totalSeconds = remainDuration;
 
     let hours: string | number = Math.floor(totalSeconds / 3600);
     hours = hours < 9 ? `0${hours}` : hours;
@@ -21,6 +29,30 @@ const useCountdownController = ({ time }: CountdownProps) => {
 
     return `${hours}:${minutes}:${seconds}`;
   };
+
+  const stopCountdown = () => {
+    if (countdownIntervalId.current) {
+      clearInterval(countdownIntervalId.current);
+    }
+  };
+
+  useEffect(() => {
+    if (canStart) {
+      countdownIntervalId.current = setInterval(() => {
+        setRemainDuration((currentRemainTime) => currentRemainTime - 1);
+      }, 1000);
+    } else {
+      stopCountdown();
+    }
+
+    return () => {
+      stopCountdown();
+    };
+  }, [canStart]);
+
+  useEffect(() => {
+    setRemainDuration(duration);
+  }, [duration]);
 
   return { generateFormattedTime };
 };

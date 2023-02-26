@@ -1,3 +1,4 @@
 export interface CountdownProps {
-  time: number;
+  duration: number;
+  canStart?: boolean;
 }
