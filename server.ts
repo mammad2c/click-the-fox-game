@@ -2,8 +2,12 @@ import fs from "fs";
 import path from "path";
 import express from "express";
 import { createServer as createViteServer } from "vite";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 const __dirname = path.resolve("");
+const PORT = process.env.PORT;
 
 async function createServer() {
   const app = express();
@@ -58,8 +62,8 @@ async function createServer() {
     }
   });
 
-  app.listen(5173);
-  console.log("server started at http://localhost:5173");
+  app.listen(PORT);
+  console.log(`server started at http://localhost:${PORT}`);
 }
 
 createServer();
