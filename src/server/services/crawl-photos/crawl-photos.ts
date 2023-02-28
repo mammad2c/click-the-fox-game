@@ -8,7 +8,7 @@ interface SingleResourceCatOrDog {
   height: number;
 }
 
-interface Photo {
+export interface CrawledResponsePhoto {
   type: "fox" | "cat" | "dog" | string;
   url: string;
 }
@@ -46,8 +46,8 @@ const getDogs = () => {
 };
 
 const crawlPhotos = async () => {
-  let dogs: Photo[] = [];
-  let cats: Photo[] = [];
+  let dogs: CrawledResponsePhoto[] = [];
+  let cats: CrawledResponsePhoto[] = [];
   let fox = {};
 
   const [foxResponse, catsResponse, dogsResponse] = await Promise.allSettled([

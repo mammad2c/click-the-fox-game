@@ -21,17 +21,38 @@ export const handlers = [
   }),
   rest.get(`${CAT_API}images/search`, (req, res, ctx) => {
     return res(
-      ctx.json({
-        file: "https://purr.objects-us-east-1.dream.io/i/295916_531552919436_290500345_796062_3164864_n.jpg",
-      }),
+      ctx.json([
+        {
+          id: "rs",
+          url: "https://cdn2.thecatapi.com/images/rs.jpg",
+          width: 480,
+          height: 640,
+        },
+        {
+          id: "27l",
+          url: "https://cdn2.thecatapi.com/images/27l.jpg",
+          width: 680,
+          height: 455,
+        },
+      ]),
     );
   }),
   rest.get(`${DOG_API}images/search`, (req, res, ctx) => {
     return res(
-      ctx.json({
-        message: "https://images.dog.ceo/breeds/otterhound/n02091635_3552.jpg",
-        status: "success",
-      }),
+      ctx.json([
+        {
+          id: "2do",
+          url: "https://cdn2.thecatapi.com/images/2do.jpg",
+          width: 500,
+          height: 395,
+        },
+        {
+          id: "4d8",
+          url: "https://cdn2.thecatapi.com/images/4d8.gif",
+          width: 490,
+          height: 245,
+        },
+      ]),
     );
   }),
 ];
