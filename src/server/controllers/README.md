@@ -18,7 +18,7 @@ Class methods could contain these:
 All methods first argument is `req` and the second argument is `res`.
 
 ```
-export class ExampleController {
+export class ExamplesController {
   index(req: Request, res: Response): any
   create(req: Request, res: Response): any
   update(req: Request, res: Response): any
