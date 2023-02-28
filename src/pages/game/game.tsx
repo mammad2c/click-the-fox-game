@@ -1,5 +1,5 @@
 import { Box } from "@/ui";
-import { SetupGameForm } from "./components";
+import { GameScene, SetupGameForm } from "./components";
 import { useGameController } from "./controller";
 
 const Game = () => {
@@ -23,7 +23,8 @@ const Game = () => {
         padding={8}
         textAlign="center"
       >
-        {status === "setup-form" && <SetupGameForm />}
+        {status === "initial-setup" && <SetupGameForm />}
+        {status === "playing" && <GameScene />}
       </Box>
     </Box>
   );

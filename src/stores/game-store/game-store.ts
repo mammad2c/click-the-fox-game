@@ -3,7 +3,7 @@ import { createStore } from "@/services";
 import type { GameStatus, GameStoreState } from "./types";
 
 const initialState: GameStoreState = {
-  status: "setup-form",
+  status: "initial-setup",
   name: "",
 };
 
@@ -13,7 +13,7 @@ const changeStatus = (newStatus: GameStatus) => {
   const { name, status } = rawGameStore.getState();
   const isInvalidName = isEmptyString(name);
 
-  if (status === "setup-form" && isInvalidName) {
+  if (status === "initial-setup" && isInvalidName) {
     return;
   }
 

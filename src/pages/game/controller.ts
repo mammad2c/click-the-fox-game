@@ -6,7 +6,7 @@ const useGameController = () => {
   const beforeunloadFlag = useRef(false);
 
   useEffect(() => {
-    if (status === "running-game" && !beforeunloadFlag.current) {
+    if (status === "playing" && !beforeunloadFlag.current) {
       window.onbeforeunload = () => {
         return "You are now running the game, are you sure to leave?";
       };
@@ -14,9 +14,9 @@ const useGameController = () => {
     }
 
     return () => {
-      if (status === "running-game") {
+      if (status === "playing") {
         window.onbeforeunload = null;
-        gameStore.changeStatus("setup-form");
+        gameStore.changeStatus("initial-setup");
       }
     };
   }, [status]);

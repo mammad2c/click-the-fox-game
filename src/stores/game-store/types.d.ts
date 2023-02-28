@@ -1,4 +1,4 @@
-export type GameStatus = "setup-form" | "running-game";
+export type GameStatus = "initial-setup" | "playing";
 
 export interface GameStoreState {
   status: GameStatus;

@@ -10,7 +10,7 @@ describe("Game", () => {
 
     act(() => {
       gameStore.setName("test");
-      gameStore.changeStatus("running-game");
+      gameStore.changeStatus("playing");
     });
 
     expect(onbeforeunloadSpy).toHaveBeenCalledTimes(1);

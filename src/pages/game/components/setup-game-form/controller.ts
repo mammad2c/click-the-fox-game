@@ -13,7 +13,7 @@ const useSetupGameFormController = () => {
     validations: formValidations,
     onSubmit: ({ form }) => {
       gameStore.setName(form.values.name);
-      gameStore.changeStatus("running-game");
+      gameStore.changeStatus("playing");
     },
   });
 
