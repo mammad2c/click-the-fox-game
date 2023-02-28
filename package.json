@@ -9,7 +9,7 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "dev": "nodemon --watch '**/*.ts' --exec 'ts-node' server.ts",
+    "dev": "nodemon --watch '**/*.ts' --exec 'ts-node' ./src/server/server.ts",
     "build": "tsc && vite build",
     "build:client": "vite build --outDir dist/client",
     "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx",
