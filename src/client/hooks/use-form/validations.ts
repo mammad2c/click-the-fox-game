@@ -6,7 +6,7 @@ export const required: ValidationFunction = (value) => {
 
   return {
     isValid,
-    message: isValid ? "" : "This field is required",
+    message: "This field is required",
   };
 };
 
@@ -16,6 +16,6 @@ export const number: ValidationFunction = (value) => {
 
   return {
     isValid,
-    message: isValid ? "" : "This field should be a number",
+    message: "This field should be a number",
   };
 };
