@@ -6,5 +6,5 @@ Use this component to create a countdown.
 
 | Props    | Type    |             Description             | Required | Default | Example | Output   |
 | -------- | ------- | :---------------------------------: | -------- | ------- | ------- | -------- |
-| duration | number  |   countdown duration in seconds.    | Yes      | -       | 500     | 00:05:00 |
+| duration | number  |   countdown duration in seconds.    | Yes      | -       | 500     | 00:08:20 |
 | canStart | boolean | control can countdown start or not. | No       | `false` | -       | -        |
