@@ -3,11 +3,7 @@ import * as path from "path";
 import * as express from "express";
 import { createServer as createViteServer } from "vite";
 import { PORT } from "./src/server/config";
-
-// controllers
-import { PhotosController } from "./src/server/controllers/photos.controller";
-
-// const __dirname = path.resolve("");
+import { router } from "./src/server/router";
 
 async function createServer() {
   const app = express();
@@ -24,7 +20,7 @@ async function createServer() {
   // if you use your own express router (express.Router()), you should use router.use
   app.use(vite.middlewares);
 
-  app.get("/photos", new PhotosController().index);
+  router(app);
 
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
