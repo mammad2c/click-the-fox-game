@@ -1,6 +1,6 @@
 import matchers from "@testing-library/jest-dom/matchers";
 import { expect } from "vitest";
-import { server } from "@/client/mocks/server";
+import { server } from "@/mocks/server";
 
 expect.extend(matchers);
 

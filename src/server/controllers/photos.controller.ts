@@ -1,11 +1,15 @@
 import type { Request, Response } from "express";
-import { crawlPhotos } from "../services/crawl-photo";
+import { crawlPhotos } from "../services/crawl-photos";
 
 class PhotosController {
   async index(req: Request, res: Response) {
-    const response = await crawlPhotos();
+    try {
+      const response = await crawlPhotos();
 
-    return res.json(response);
+      return res.json(response);
+    } catch (err) {
+      return err;
+    }
   }
 }
 

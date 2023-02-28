@@ -1,4 +1,4 @@
-import { renderComponent } from "@/client/tests/render-component";
+import { renderComponent } from "@/tests/render-component";
 import { GameScene } from "./game-scene";
 
 describe("GameScene", () => {

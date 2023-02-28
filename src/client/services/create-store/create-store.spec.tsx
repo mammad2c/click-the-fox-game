@@ -1,4 +1,4 @@
-import { renderComponent, act, screen } from "@/client/tests/render-component";
+import { renderComponent, act, screen } from "@/tests/render-component";
 import { createStore } from "./create-store";
 
 const initialState = {

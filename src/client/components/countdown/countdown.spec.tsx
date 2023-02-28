@@ -1,4 +1,4 @@
-import { act, renderComponent, screen } from "@/client/tests/render-component";
+import { act, renderComponent, screen } from "@/tests/render-component";
 import { Countdown } from "./countdown";
 
 describe("Countdown", () => {

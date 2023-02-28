@@ -1,8 +1,4 @@
-import {
-  renderComponent,
-  screen,
-  fireEvent,
-} from "@/client/tests/render-component";
+import { renderComponent, screen, fireEvent } from "@/tests/render-component";
 import { FormConfig } from "./types";
 import { useForm } from "./use-form";
 import { number, required } from "./validations";

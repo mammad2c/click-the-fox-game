@@ -1,4 +1,4 @@
-import { renderComponent, screen } from "@/client/tests/render-component";
+import { renderComponent, screen } from "@/tests/render-component";
 import { Button } from "./button";
 
 describe("Button", () => {

@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as path from "path";
 import * as express from "express";
 import { createServer as createViteServer } from "vite";
-import { PORT } from "./src/server/config";
+import { PORT } from "./src/config";
 import { router } from "./src/server/router";
 
 async function createServer() {

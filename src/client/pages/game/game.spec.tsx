@@ -1,5 +1,5 @@
 import { gameStore } from "@/client/stores";
-import { act, renderComponent } from "@/client/tests/render-component";
+import { act, renderComponent } from "@/tests/render-component";
 import { Game } from "./game";
 
 describe("Game", () => {
