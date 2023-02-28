@@ -1,13 +1,13 @@
-import fs from "fs";
-import path from "path";
-import express from "express";
+import * as fs from "fs";
+import * as path from "path";
+import * as express from "express";
 import { createServer as createViteServer } from "vite";
-import * as dotenv from "dotenv";
+import { PORT } from "./src/server/config";
 
-dotenv.config();
+// controllers
+import { PhotosController } from "./src/server/controllers/photos.controller";
 
-const __dirname = path.resolve("");
-const PORT = process.env.PORT;
+// const __dirname = path.resolve("");
 
 async function createServer() {
   const app = express();
@@ -23,6 +23,8 @@ async function createServer() {
   // use vite's connect instance as middleware
   // if you use your own express router (express.Router()), you should use router.use
   app.use(vite.middlewares);
+
+  app.get("/photos", new PhotosController().index);
 
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
