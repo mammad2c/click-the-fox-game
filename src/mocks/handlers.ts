@@ -19,14 +19,14 @@ export const handlers = [
       }),
     );
   }),
-  rest.get(CAT_API, (req, res, ctx) => {
+  rest.get(`${CAT_API}images/search`, (req, res, ctx) => {
     return res(
       ctx.json({
         file: "https://purr.objects-us-east-1.dream.io/i/295916_531552919436_290500345_796062_3164864_n.jpg",
       }),
     );
   }),
-  rest.get(DOG_API, (req, res, ctx) => {
+  rest.get(`${DOG_API}images/search`, (req, res, ctx) => {
     return res(
       ctx.json({
         message: "https://images.dog.ceo/breeds/otterhound/n02091635_3552.jpg",
