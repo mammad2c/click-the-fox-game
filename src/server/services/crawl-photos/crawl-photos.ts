@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FOX_API, CAT_API, DOG_API } from "../../config";
+import { FOX_API, CAT_API, DOG_API } from "../../../config";
 
 const getFox = () => {
   return axios({
@@ -27,10 +27,10 @@ interface Photo {
   url: string;
 }
 
-const crawlPhotos = async (numbers = 1) => {
+const crawlPhotos = async (series = 1) => {
   const fetched: Photo[] = [];
 
-  while (fetched.length < numbers * 3) {
+  while (fetched.length < series * 3) {
     const [fox, cat, dog] = await Promise.allSettled([
       getFox(),
       getCat(),

@@ -1,5 +1,5 @@
 import type { Request, Response } from "express";
-import { crawlPhotos } from "../services/crawl-photos";
+import { crawlPhotos } from "../../services/crawl-photos/crawl-photos";
 
 class PhotosController {
   async index(req: Request, res: Response) {

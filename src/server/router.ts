@@ -1,7 +1,7 @@
 import type { Express } from "express";
 
 // controllers
-import { PhotosController } from "./controllers/photos.controller";
+import { PhotosController } from "./controllers/photos/photos.controller";
 
 const router = (app: Express) => {
   // define your routes and map to your controllers
