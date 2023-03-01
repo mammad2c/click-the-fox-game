@@ -21,6 +21,8 @@ api.interceptors.response.use(
       status: "error",
       description: message,
     });
+
+    return error;
   },
 );
 
