@@ -1,17 +1,6 @@
 import axios from "axios";
 import { FOX_API, CAT_API, DOG_API } from "../../../config";
-
-interface SingleResourceCatOrDog {
-  id: string;
-  url: string;
-  width: number;
-  height: number;
-}
-
-export interface CrawledResponsePhoto {
-  type: "fox" | "cat" | "dog" | string;
-  url: string;
-}
+import { PhotoSchema, SingleResourceCatOrDog } from "./types";
 
 const getFox = () => {
   return axios({
@@ -46,8 +35,8 @@ const getDogs = () => {
 };
 
 const crawlPhotos = async () => {
-  let dogs: CrawledResponsePhoto[] = [];
-  let cats: CrawledResponsePhoto[] = [];
+  let dogs: PhotoSchema[] = [];
+  let cats: PhotoSchema[] = [];
   let fox = {};
 
   const [foxResponse, catsResponse, dogsResponse] = await Promise.allSettled([
@@ -64,14 +53,14 @@ const crawlPhotos = async () => {
   }
 
   if (catsResponse.status === "fulfilled") {
-    cats = catsResponse.value.data.slice(0, 4).map((cat) => ({
+    cats = catsResponse.value.data.map((cat) => ({
       type: "cat",
       url: cat.url,
     }));
   }
 
   if (dogsResponse.status === "fulfilled") {
-    dogs = dogsResponse.value.data.slice(0, 4).map((dog) => ({
+    dogs = dogsResponse.value.data.map((dog) => ({
       type: "dog",
       url: dog.url,
     }));
