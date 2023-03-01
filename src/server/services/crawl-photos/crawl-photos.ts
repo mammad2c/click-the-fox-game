@@ -66,7 +66,7 @@ const crawlPhotos = async () => {
     }));
   }
 
-  const result = [fox, ...cats, ...dogs];
+  const result = [fox, ...cats, ...dogs] as PhotoSchema[];
 
   return result;
 };
