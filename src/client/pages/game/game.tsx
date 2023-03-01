@@ -12,20 +12,14 @@ const Game = () => {
       justifyContent="center"
       minHeight="100vh"
       flexDirection="column"
+      width="100%"
     >
-      <Box
-        border="2px"
-        rounded={4}
-        width={{
-          base: "100%",
-          sm: 300,
-        }}
-        padding={8}
-        textAlign="center"
-      >
-        {status === "initial-setup" && <SetupGameForm />}
-        {status === "playing" && <GameScene />}
-      </Box>
+      {status === "initial-setup" && (
+        <Box border="2px" rounded={4} padding={8} textAlign="center">
+          <SetupGameForm />
+        </Box>
+      )}
+      {status === "playing" && <GameScene />}
     </Box>
   );
 };

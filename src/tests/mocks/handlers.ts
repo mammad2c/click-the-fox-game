@@ -14,7 +14,7 @@ export const handlers = [
   rest.get(FOX_API, (req, res, ctx) => {
     return res(
       ctx.json({
-        image: "https://randomfox.ca/images/111.jpg",
+        image: "test-url-fox",
         link: "https://randomfox.ca/?i=111",
       }),
     );
@@ -24,13 +24,13 @@ export const handlers = [
       ctx.json([
         {
           id: "rs",
-          url: "https://cdn2.thecatapi.com/images/rs.jpg",
+          url: "test-url-cat",
           width: 480,
           height: 640,
         },
         {
           id: "27l",
-          url: "https://cdn2.thecatapi.com/images/27l.jpg",
+          url: "test-url-cat",
           width: 680,
           height: 455,
         },
@@ -42,16 +42,55 @@ export const handlers = [
       ctx.json([
         {
           id: "2do",
-          url: "https://cdn2.thecatapi.com/images/2do.jpg",
+          url: "test-url-cat",
           width: 500,
           height: 395,
         },
         {
           id: "4d8",
-          url: "https://cdn2.thecatapi.com/images/4d8.gif",
+          url: "test-url-cat",
           width: 490,
           height: 245,
         },
+      ]),
+    );
+  }),
+  rest.get("/api/photos", (req, res, ctx) => {
+    return res(
+      ctx.json([
+        { type: "fox", url: "test-url-fox" },
+        { type: "cat", url: "test-url-cat" },
+        { type: "cat", url: "test-url-cat" },
+        { type: "cat", url: "test-url-cat" },
+        { type: "cat", url: "test-url-cat" },
+        { type: "cat", url: "test-url-cat" },
+        { type: "cat", url: "test-url-cat" },
+        {
+          type: "cat",
+          url: "test-url-cat",
+        },
+        {
+          type: "cat",
+          url: "test-url-cat",
+        },
+        { type: "cat", url: "test-url-cat.jpg" },
+        { type: "cat", url: "test-url-cat" },
+        {
+          type: "dog",
+          url: "test-url-dog",
+        },
+        {
+          type: "dog",
+          url: "test-url-dog",
+        },
+        { type: "dog", url: "test-url-dog" },
+        { type: "dog", url: "test-url-dog" },
+        { type: "dog", url: "test-url-dog" },
+        { type: "dog", url: "test-url-dog.jpg" },
+        { type: "dog", url: "test-url-dog" },
+        { type: "dog", url: "test-url-dog.jpg" },
+        { type: "dog", url: "test-url-dog.jpg" },
+        { type: "dog", url: "test-url-dog" },
       ]),
     );
   }),
