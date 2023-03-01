@@ -1,4 +1,4 @@
-import { isEmptyString } from "@/helpers";
+import { isEmptyString } from "@/shared";
 import type { ValidationFunction } from "./types";
 
 export const required: ValidationFunction = (value) => {

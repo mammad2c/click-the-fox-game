@@ -1,4 +1,4 @@
-import { isEmptyString } from "@/helpers";
+import { isEmptyString } from "@/shared";
 import { createStore } from "@/client/services";
 import type { GameStatus, GameStoreState } from "./types";
 

@@ -1,21 +1,21 @@
 import matchers from "@testing-library/jest-dom/matchers";
 import { expect } from "vitest";
-import { server } from "@/mocks/server";
+import { mockServer } from "./mocks/mock-server";
 
 expect.extend(matchers);
 
 // Establish API mocking before all tests.
 beforeAll(() => {
-  server.listen();
+  mockServer.listen();
 });
 
 // Reset any request handlers that we may add during the tests,
 // so they don't affect other tests.
 afterEach(() => {
-  server.resetHandlers();
+  mockServer.resetHandlers();
 });
 
 // Clean up after the tests are finished.
 afterAll(() => {
-  server.close();
+  mockServer.close();
 });
