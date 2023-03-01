@@ -101,4 +101,18 @@ describe("Countdown", () => {
     });
     expect(screen.getByText("00:00:00")).toBeTruthy();
   });
+
+  it("should trigger onFinish when countdown reaches end", () => {
+    vi.useFakeTimers();
+
+    const onFinish = vi.fn();
+
+    renderComponent(<Countdown duration={30} canStart onFinish={onFinish} />);
+
+    act(() => {
+      vi.advanceTimersByTime(30 * 1000);
+    });
+
+    expect(onFinish).toBeCalled();
+  });
 });

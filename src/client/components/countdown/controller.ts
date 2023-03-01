@@ -5,6 +5,7 @@ import type { CountdownProps } from "./types";
 const useCountdownController = ({
   duration,
   canStart,
+  onFinish,
 }: CountdownProps = defaultCountdownPropsValue) => {
   const [remainDuration, setRemainDuration] = useState(duration);
   const countdownIntervalId = useRef<NodeJS.Timer | null>(null);
@@ -53,6 +54,12 @@ const useCountdownController = ({
   useEffect(() => {
     setRemainDuration(duration);
   }, [duration]);
+
+  useEffect(() => {
+    if (remainDuration <= 0 && typeof onFinish === "function") {
+      onFinish();
+    }
+  }, [remainDuration]);
 
   return { generateFormattedTime };
 };
