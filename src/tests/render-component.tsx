@@ -2,6 +2,7 @@ import React, { ReactElement } from "react";
 import { render, RenderOptions } from "@testing-library/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -17,4 +18,5 @@ const renderComponent = (
 ) => render(ui, { wrapper: AllTheProviders, ...options });
 
 export * from "@testing-library/react";
-export { renderComponent };
+
+export { renderComponent, userEvent };
