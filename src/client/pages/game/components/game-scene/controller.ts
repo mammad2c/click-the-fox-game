@@ -1,10 +1,6 @@
 import { api } from "@/client/services";
 import { useEffect, useReducer, useState } from "react";
-import type {
-  CoordinateObj,
-  ImageSpriteResponseObj,
-  PhotoSchema,
-} from "@/server/services";
+import type { ImageSpriteResponseObj } from "@/server/services";
 import { initialPhotosState } from "./config";
 import { action, PhotosState } from "./types";
 import { winnerTypes } from "@/config";
