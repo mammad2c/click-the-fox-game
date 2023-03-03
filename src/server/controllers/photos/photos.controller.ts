@@ -6,6 +6,10 @@ import { MAX_FILE_COUNT_CACHED, photosPath } from "../../../config";
 class PhotosController {
   async index(req: Request, res: Response) {
     try {
+      if (!fs.existsSync(photosPath)) {
+        fs.mkdirSync(photosPath);
+      }
+
       const files = fs.readdirSync(photosPath, {
         withFileTypes: true,
       });
