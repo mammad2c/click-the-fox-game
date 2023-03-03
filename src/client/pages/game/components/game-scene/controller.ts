@@ -120,7 +120,6 @@ const useGameSceneController = () => {
     }
 
     return () => {
-      // gameStore.changeStatus("initial-setup");
       stopFetchPreloadFiles();
     };
   }, [preloadFiles.length, isFinished]);
@@ -147,6 +146,7 @@ const useGameSceneController = () => {
     });
 
     dispatchPhotoState({ type: "finish" });
+    gameStore.changeStatus("initial-setup");
     navigate("/scoreboard");
   };
 

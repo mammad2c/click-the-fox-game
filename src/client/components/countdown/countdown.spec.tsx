@@ -64,6 +64,8 @@ describe("Countdown", () => {
 
     expect(screen.queryByText("00:00:30")).not.toBeTruthy();
     expect(screen.getByText("00:00:15")).toBeTruthy();
+
+    vi.useRealTimers();
   });
 
   it("should start countdown and continue until it reaches 0", () => {
@@ -100,6 +102,8 @@ describe("Countdown", () => {
       vi.advanceTimersByTime(40000 * 1000);
     });
     expect(screen.getByText("00:00:00")).toBeTruthy();
+
+    vi.useRealTimers();
   });
 
   it("should trigger onFinish when countdown reaches end", () => {
@@ -114,5 +118,6 @@ describe("Countdown", () => {
     });
 
     expect(onFinish).toBeCalled();
+    vi.useRealTimers();
   });
 });

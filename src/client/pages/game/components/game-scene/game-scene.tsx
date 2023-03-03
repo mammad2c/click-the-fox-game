@@ -49,6 +49,7 @@ const GameScene = () => {
                 height={height}
                 role="img"
                 aria-label={type}
+                cursor="pointer"
                 style={{
                   background: `-${x}px -${y}px url(${currentFileName})`,
                 }}
