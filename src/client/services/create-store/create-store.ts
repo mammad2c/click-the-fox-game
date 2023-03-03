@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react";
 
-const createStore = <State = object>(initialState: State) => {
+const createStore = <State>(initialState: State) => {
   type NewStateFunctionType = (currState: State) => State;
 
   let currentState = Object.assign({}, initialState || {}) as State;
@@ -28,7 +28,11 @@ const createStore = <State = object>(initialState: State) => {
     setState(initialState);
   };
 
-  const useSelector = (selector = (storeState: State) => storeState) => {
+  const useSelector = <SelectorOutput = State>(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    selector: (storeState: State) => SelectorOutput = (storeState) =>
+      storeState as any,
+  ) => {
     // const [localState, setLocalState] = useState<State>(selector(getState()));
     const localState = useSyncExternalStore(
       subscribe,

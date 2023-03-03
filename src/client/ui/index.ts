@@ -4,3 +4,4 @@ export { Button } from "./button/button";
 export { Container } from "./container/container";
 export { FormInput } from "./form-input/form-input";
 export { SimpleGrid } from "./simple-grid/simple-grid";
+export { Table } from "./table/table";

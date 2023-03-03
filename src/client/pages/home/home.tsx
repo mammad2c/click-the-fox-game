@@ -43,6 +43,7 @@ const Home = () => {
               base: "100%",
               sm: 200,
             }}
+            to="/scoreboard"
           >
             Scoreboard
           </Button>
