@@ -10,6 +10,11 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    // we don't want to show anything when request is cancelled
+    if (axios.isCancel(error)) {
+      return error;
+    }
+
     let message = "Something went wrong";
 
     if (error.response) {
