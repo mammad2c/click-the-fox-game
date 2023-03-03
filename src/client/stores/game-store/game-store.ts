@@ -1,11 +1,7 @@
 import { isEmptyString } from "@/shared";
 import { createStore } from "@/client/services";
 import type { GameStatus, GameStoreState } from "./types";
-
-const initialState: GameStoreState = {
-  status: "initial-setup",
-  name: "",
-};
+import { initialState } from "./config";
 
 const rawGameStore = createStore(initialState);
 
