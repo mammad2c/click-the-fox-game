@@ -1,4 +1,3 @@
-import { uuid4 } from "@/shared";
 import { tableLocalStorageKey } from "./config";
 import { scoreboardStore } from "./scoreboard-store";
 
@@ -11,7 +10,6 @@ describe("ScoreboardStore", () => {
     const scoreboardItem = {
       name: "Mohammad",
       score: 1,
-      date: new Date().toDateString(),
     };
 
     scoreboardStore.setState({
@@ -24,22 +22,17 @@ describe("ScoreboardStore", () => {
 
     expect(table[0].name).toBe(scoreboardItem.name);
     expect(table[0].score).toBe(scoreboardItem.score);
-    expect(table[0].date).toBe(scoreboardItem.date);
   });
 
   it("should scoreboard table be sorted by score", () => {
     const person1 = {
       name: "Mohammad",
       score: 1,
-      date: new Date().toDateString(),
-      id: uuid4(),
     };
 
     const person2 = {
       name: "Jack",
       score: 4,
-      date: new Date().toDateString(),
-      id: uuid4(),
     };
 
     scoreboardStore.addNewRecord(person1);

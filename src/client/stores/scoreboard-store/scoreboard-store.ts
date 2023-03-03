@@ -14,7 +14,7 @@ const addNewRecord = (newRecord: ScoreboardTableItem) => {
   const { table } = rawScoreboardStore.getState();
 
   const newTable = orderBy(
-    [...table, { ...newRecord, id: uuid4() }],
+    [...table, { ...newRecord, id: uuid4(), date: new Date().toDateString() }],
     ["score"],
     "desc",
   );

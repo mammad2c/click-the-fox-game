@@ -1,7 +1,7 @@
 export interface ScoreboardTableItem {
   name: string;
   score: number;
-  date: string;
+  date?: string;
   id?: string;
 }
 

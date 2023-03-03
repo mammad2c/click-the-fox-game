@@ -8,12 +8,10 @@ describe("Scoreboard", () => {
       scoreboardStore.addNewRecord({
         name: "Mohammad",
         score: 2,
-        date: new Date().toDateString(),
       });
       scoreboardStore.addNewRecord({
         name: "Jack",
         score: 5,
-        date: new Date().toDateString(),
       });
     });
 
