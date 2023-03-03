@@ -1,13 +1,10 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as express from "express";
+import fs from "fs";
+import path from "path";
 import { createServer as createViteServer } from "vite";
 import { PORT } from "../config";
-import { router } from "./router";
+import { app } from "./app";
 
 async function createServer() {
-  const app = express();
-
   // Create Vite server in middleware mode and configure the app type as
   // 'custom', disabling Vite's own HTML serving logic so parent server
   // can take control
@@ -19,8 +16,6 @@ async function createServer() {
   // use vite's connect instance as middleware
   // if you use your own express router (express.Router()), you should use router.use
   app.use(vite.middlewares);
-
-  router(app);
 
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;

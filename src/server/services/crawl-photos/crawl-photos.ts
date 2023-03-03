@@ -1,6 +1,8 @@
 import axios from "axios";
-import { FOX_API, CAT_API, DOG_API } from "../../../config";
+import { FOX_API, CAT_API, DOG_API, photosPath } from "../../../config";
 import { PhotoSchema, SingleResourceCatOrDog } from "./types";
+import fs from "fs";
+import sharp from "sharp";
 
 const getFox = () => {
   return axios({
@@ -18,6 +20,8 @@ const getCats = () => {
     url: "images/search",
     params: {
       limit: 10,
+      size: "small",
+      mime_types: "jpg",
     },
     method: "GET",
   });
@@ -29,6 +33,8 @@ const getDogs = () => {
     url: "images/search",
     params: {
       limit: 10,
+      size: "small",
+      mime_types: "jpg",
     },
     method: "GET",
   });
@@ -66,9 +72,51 @@ const crawlPhotos = async () => {
     }));
   }
 
-  const result = [fox, ...cats, ...dogs] as PhotoSchema[];
+  const photos = [fox, ...cats, ...dogs] as PhotoSchema[];
 
-  return result;
+  const downloadableImages = [];
+
+  for (const photo of photos) {
+    downloadableImages.push(
+      Promise.resolve(
+        axios({
+          url: photo.url,
+          maxContentLength: -1,
+          maxBodyLength: -1,
+          responseType: "arraybuffer",
+          params: {
+            type: photo.type,
+          },
+        }),
+      ),
+    );
+  }
+
+  const bufferedPhotos = await Promise.all(downloadableImages);
+
+  const convertiblePhotos = [];
+
+  for (const bufferedPhoto of bufferedPhotos) {
+    const url = new URL(bufferedPhoto.config.url as string);
+    const splitPathname = url.pathname.split("/");
+    const finalFileName = splitPathname[splitPathname.length - 1].split(".")[0];
+    const { type } = bufferedPhoto.config.params;
+
+    if (!fs.existsSync(photosPath)) {
+      fs.mkdirSync(photosPath);
+    }
+
+    convertiblePhotos.push(
+      Promise.resolve(
+        sharp(bufferedPhoto.data)
+          .resize(200, 200)
+          .toFormat("jpg", { mozjpeg: true, quality: 60 })
+          .toFile(`${photosPath}/${type}-${finalFileName}.jpg`),
+      ),
+    );
+  }
+
+  await Promise.all(convertiblePhotos);
 };
 
 export { crawlPhotos };

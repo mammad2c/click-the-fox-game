@@ -1,10 +1,12 @@
+import { CoordinateObj } from "@/server/services";
+
 export interface PhotosState {
-  allPhotos: PhotoSchema[];
-  selectablePhotos: PhotoSchema[];
+  currentCoordinates: CoordinateObj[] | undefined;
+  currentFile: string | undefined;
   isReady: boolean;
 }
 
 export interface action {
   payload?: unknown;
-  type: "new-photos";
+  type: "new-photo";
 }

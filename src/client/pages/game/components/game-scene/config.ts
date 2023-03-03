@@ -1,9 +1,7 @@
 import { PhotosState } from "./types";
 
-export const winnerTypes = ["fox"];
-
 export const initialPhotosState: PhotosState = {
-  allPhotos: [],
-  selectablePhotos: [],
+  currentCoordinates: undefined,
+  currentFile: undefined,
   isReady: false,
 };

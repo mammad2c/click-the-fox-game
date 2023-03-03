@@ -4,7 +4,7 @@ import { Container, SimpleGrid } from "@/client/ui";
 import { useGameSceneController } from "./controller";
 
 const GameScene = () => {
-  const { selectablePhotos, isReady, score, calculateScore } =
+  const { currentFile, currentCoordinates, isReady, score, calculateScore } =
     useGameSceneController();
 
   return (
@@ -15,22 +15,29 @@ const GameScene = () => {
         <Box>Score: {score}</Box>
       </Container>
 
-      <SimpleGrid columns={3} spacing={5} className="game-scene-images-wrapper">
-        {selectablePhotos.map(({ type, url }) => (
-          <Box textAlign="center" key={`${type}-${url}`}>
-            <Box
-              src={url}
-              margin="0 auto"
-              alt={type}
-              as="img"
-              width={200}
-              height={200}
-              role="button"
-              onClick={() => calculateScore(type)}
-            ></Box>
-          </Box>
-        ))}
-      </SimpleGrid>
+      {currentCoordinates && currentFile && (
+        <SimpleGrid
+          columns={3}
+          spacing={5}
+          className="game-scene-images-wrapper"
+        >
+          {currentCoordinates.map(({ id, x, y, height, type, width }) => (
+            <Box textAlign="center" key={id}>
+              <Box
+                margin="0 auto"
+                width={width}
+                height={height}
+                role="img"
+                aria-label={type}
+                style={{
+                  background: `-${x}px -${y}px url(${currentFile})`,
+                }}
+                onClick={() => calculateScore(type)}
+              ></Box>
+            </Box>
+          ))}
+        </SimpleGrid>
+      )}
     </Box>
   );
 };
