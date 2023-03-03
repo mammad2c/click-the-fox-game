@@ -31,6 +31,7 @@ const createStore = <State>(initialState: State) => {
   const useSelector = <SelectorOutput = State>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selector: (storeState: State) => SelectorOutput = (storeState) =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       storeState as any,
   ) => {
     // const [localState, setLocalState] = useState<State>(selector(getState()));
