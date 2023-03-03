@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   TableContainer as UITableContainer,
   Table as UITable,
@@ -10,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 
 interface TableProps {
-  headers: string[];
+  headers: Array<{ title: string; value: string }>;
   items: Array<Record<string, any>>;
   variant?: UITableProps["variant"];
 }
@@ -18,13 +19,27 @@ interface TableProps {
 const Table = ({ headers, items, variant = "striped" }: TableProps) => {
   const isEmptyTable = items.length === 0;
 
+  const headerValues = headers.map((header) => header.value);
+
+  const requiredItems = items.reduce((acc: Array<unknown>, item) => {
+    const newItem = headerValues.map((key, index) => {
+      if (key === "item-index") {
+        return index + 1;
+      }
+
+      return item[key];
+    });
+
+    return [...acc, { values: newItem, id: item.id }];
+  }, []);
+
   return (
     <UITableContainer>
       <UITable variant={variant}>
         <UIThead>
           <UITr>
             {headers.map((header) => (
-              <UITh key={header}>{header}</UITh>
+              <UITh key={header.value}>{header.title}</UITh>
             ))}
           </UITr>
         </UIThead>
@@ -36,13 +51,11 @@ const Table = ({ headers, items, variant = "striped" }: TableProps) => {
               </UITd>
             </UITr>
           )}
-          {items.map((item) => {
-            const itemKeys = Object.keys(item);
-
+          {requiredItems.map((item: any) => {
             return (
               <UITr key={item.id}>
-                {itemKeys.map((key) => (
-                  <UITd key={key}>{item[key]}</UITd>
+                {item.values.map((value: any, index: number) => (
+                  <UITd key={index}>{value}</UITd>
                 ))}
               </UITr>
             );
