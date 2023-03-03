@@ -66,7 +66,7 @@ vi.mock("spritesmith", () => {
 describe("GET /api/photos", () => {
   afterEach(() => {
     vi.restoreAllMocks();
-    // mock.restore();
+    mock.restore();
   });
 
   it("should return image and coordinates", async () => {
