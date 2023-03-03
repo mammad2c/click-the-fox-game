@@ -21,17 +21,20 @@ const Table = ({ headers, items, variant = "striped" }: TableProps) => {
 
   const headerValues = headers.map((header) => header.value);
 
-  const requiredItems = items.reduce((acc: Array<unknown>, item) => {
-    const newItem = headerValues.map((key, index) => {
-      if (key === "item-index") {
-        return index + 1;
-      }
+  const requiredItems = items.reduce(
+    (acc: Array<unknown>, item, currentIndex) => {
+      const newItem = headerValues.map((key) => {
+        if (key === "item-index") {
+          return currentIndex + 1;
+        }
 
-      return item[key];
-    });
+        return item[key];
+      });
 
-    return [...acc, { values: newItem, id: item.id }];
-  }, []);
+      return [...acc, { values: newItem, id: item.id }];
+    },
+    [],
+  );
 
   return (
     <UITableContainer>
