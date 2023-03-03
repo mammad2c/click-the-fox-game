@@ -1,4 +1,4 @@
-import { Box } from "@/client/ui";
+import { Box, Text } from "@/client/ui";
 import { GameScene, SetupGameForm } from "./components";
 import { useGameController } from "./controller";
 
@@ -14,6 +14,9 @@ const Game = () => {
       flexDirection="column"
       width="100%"
     >
+      <Text fontSize="4xl" as="h1" mb={8}>
+        Click the FOX!
+      </Text>
       {status === "initial-setup" && (
         <Box border="2px" rounded={4} padding={8} textAlign="center">
           <SetupGameForm />

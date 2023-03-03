@@ -21,7 +21,7 @@ const GameScene = () => {
             Time left:
           </Box>
           <Countdown
-            duration={5}
+            duration={30}
             canStart={canGameGetStarted}
             onFinish={onFinish}
           />
