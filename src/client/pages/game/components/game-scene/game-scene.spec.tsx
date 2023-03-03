@@ -1,6 +1,5 @@
 import { winnerTypes } from "@/config";
 import {
-  act,
   renderComponent,
   screen,
   userEvent,
