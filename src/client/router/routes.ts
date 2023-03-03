@@ -1,4 +1,4 @@
-import { Home, Game } from "@/client/pages";
+import { Home, Game, Scoreboard } from "@/client/pages";
 
 const routes = [
   {
@@ -9,6 +9,10 @@ const routes = [
   {
     path: "/game",
     component: Game,
+  },
+  {
+    path: "/scoreboard",
+    component: Scoreboard,
   },
 ];
 
