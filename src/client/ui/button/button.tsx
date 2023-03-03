@@ -10,10 +10,12 @@ interface ButtonProps extends UIButtonProps {
 
 const Button = ({ to, ...restProps }: ButtonProps) => {
   if (to) {
-    return <UIButton as={NavLink} {...restProps} to={to} />;
+    return (
+      <UIButton backgroundColor="yellow" as={NavLink} {...restProps} to={to} />
+    );
   }
 
-  return <UIButton {...restProps} />;
+  return <UIButton backgroundColor="yellow" {...restProps} />;
 };
 
 export { Button };

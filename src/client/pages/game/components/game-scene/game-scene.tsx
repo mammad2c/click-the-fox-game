@@ -9,6 +9,7 @@ const GameScene = () => {
     currentCoordinates,
     canGameGetStarted,
     score,
+    onFinish,
     calculateScore,
   } = useGameSceneController();
 
@@ -19,7 +20,11 @@ const GameScene = () => {
           <Box as="span" display="inline-block" mr={2}>
             Time left:
           </Box>
-          <Countdown duration={30} canStart={canGameGetStarted} />
+          <Countdown
+            duration={5}
+            canStart={canGameGetStarted}
+            onFinish={onFinish}
+          />
         </Box>
         <Box mx={4}>|</Box>
         <Box>

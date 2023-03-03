@@ -5,9 +5,10 @@ export interface PhotosState {
   currentFileName: string | undefined;
   isReady: boolean;
   preloadFiles: ImageSpriteResponseObj[];
+  isFinished: boolean;
 }
 
 export interface action {
   payload?: unknown;
-  type: "new-photo" | "create-current";
+  type: "new-photo" | "create-current" | "finish";
 }

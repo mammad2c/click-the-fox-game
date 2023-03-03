@@ -1,3 +1,4 @@
+import { gameStore } from "@/client/stores";
 import { winnerTypes } from "@/config";
 import {
   renderComponent,
@@ -6,6 +7,11 @@ import {
   waitFor,
 } from "@/tests/render-component";
 import { GameScene } from "./game-scene";
+
+beforeEach(() => {
+  gameStore.setName("Mohammad");
+  gameStore.changeStatus("playing");
+});
 
 describe("GameScene", () => {
   it("should render at least one winner image", async () => {
@@ -79,5 +85,15 @@ describe("GameScene", () => {
     await userEvent.click(foundOtherElement as Element);
 
     expect(screen.getByText(/score:/i)).toHaveTextContent(/1/i);
+  });
+
+  it("should finish the game when countdown reaches end", () => {
+    vi.useFakeTimers();
+    renderComponent(<GameScene />);
+    vi.advanceTimersByTime(30 * 1000);
+    vi.useRealTimers();
+
+    expect(gameStore.getState().status).toBe("initial-setup");
+    expect(window.location.pathname).toBe("scoreboard");
   });
 });

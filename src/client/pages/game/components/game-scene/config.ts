@@ -5,6 +5,7 @@ export const initialPhotosState: PhotosState = {
   currentFileName: undefined,
   isReady: false,
   preloadFiles: [],
+  isFinished: false,
 };
 
 export const maxPreloadFiles = 5;

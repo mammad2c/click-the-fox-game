@@ -4,6 +4,8 @@ import type { ImageSpriteResponseObj } from "@/server/services";
 import { initialPhotosState, maxPreloadFiles } from "./config";
 import { action, PhotosState } from "./types";
 import { winnerTypes } from "@/config";
+import { gameStore, scoreboardStore } from "@/client/stores";
+import { useNavigate } from "react-router-dom";
 
 const debounce = (fn: (...args: unknown[]) => void, ms = 300) => {
   let timeoutId: ReturnType<typeof setTimeout>;
@@ -43,6 +45,10 @@ const imagesReducer = (state: PhotosState, action: action) => {
       };
     }
 
+    case "finish": {
+      return { ...initialPhotosState, isFinished: true };
+    }
+
     default: {
       return state;
     }
@@ -51,20 +57,23 @@ const imagesReducer = (state: PhotosState, action: action) => {
 
 const useGameSceneController = () => {
   const [
-    { isReady, currentFileName, currentCoordinates, preloadFiles },
+    { isReady, currentFileName, currentCoordinates, preloadFiles, isFinished },
     dispatchPhotoState,
   ] = useReducer(imagesReducer, initialPhotosState);
 
   const preloadInterval = useRef<NodeJS.Timer | null>(null);
+
   const numberOfFetches = useRef<number>(0);
 
   const [score, setScore] = useState(0);
 
   const canGameGetStarted = Boolean(
-    currentFileName && currentCoordinates && isReady,
+    currentFileName && currentCoordinates && isReady && !isFinished,
   );
 
   const flag = useRef(false);
+
+  const navigate = useNavigate();
 
   const stopFetchPreloadFiles = () => {
     if (preloadInterval.current) {
@@ -91,7 +100,8 @@ const useGameSceneController = () => {
     preloadInterval.current = setInterval(() => {
       if (
         preloadFiles.length < maxPreloadFiles &&
-        numberOfFetches.current < maxPreloadFiles
+        numberOfFetches.current < maxPreloadFiles &&
+        !isFinished
       ) {
         fetchPhotos();
         numberOfFetches.current += 1;
@@ -105,10 +115,15 @@ const useGameSceneController = () => {
       });
     }
 
+    if (isFinished) {
+      stopFetchPreloadFiles();
+    }
+
     return () => {
+      // gameStore.changeStatus("initial-setup");
       stopFetchPreloadFiles();
     };
-  }, [preloadFiles.length]);
+  }, [preloadFiles.length, isFinished]);
 
   const calculateScore = (type: string) => {
     setScore((currentScore) => {
@@ -125,6 +140,16 @@ const useGameSceneController = () => {
     numberOfFetches.current -= 3;
   };
 
+  const onFinish = () => {
+    scoreboardStore.addNewRecord({
+      name: gameStore.getState().name,
+      score,
+    });
+
+    dispatchPhotoState({ type: "finish" });
+    navigate("/scoreboard");
+  };
+
   return {
     score,
     currentFileName,
@@ -133,6 +158,7 @@ const useGameSceneController = () => {
     canGameGetStarted,
     dispatchPhotoState,
     calculateScore,
+    onFinish,
   };
 };
 
