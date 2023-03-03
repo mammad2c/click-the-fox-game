@@ -57,4 +57,24 @@ describe("createStore", () => {
 
     expect(store.getState().counter).toBe(initialState.counter);
   });
+
+  it("should accept custom subscribers", () => {
+    const store = createStore(initialState);
+
+    const subscriber = vi.fn();
+
+    const unsubscribe = store.subscribe(subscriber);
+
+    store.setState({ counter: 1 });
+
+    expect(subscriber).toHaveBeenCalled();
+    expect(subscriber).toHaveBeenCalledWith({
+      counter: 1,
+    });
+
+    unsubscribe();
+
+    store.setState({ counter: 2 });
+    expect(subscriber).toHaveBeenCalledTimes(1);
+  });
 });

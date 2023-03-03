@@ -53,6 +53,7 @@ const createStore = <State = object>(initialState: State) => {
     getState,
     setState,
     useSelector,
+    subscribe,
     resetState,
   };
 };
