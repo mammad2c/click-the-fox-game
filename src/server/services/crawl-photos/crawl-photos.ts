@@ -59,14 +59,14 @@ const crawlPhotos = async () => {
   }
 
   if (catsResponse.status === "fulfilled") {
-    cats = catsResponse.value.data.map((cat) => ({
+    cats = catsResponse.value.data.slice(0, 4).map((cat) => ({
       type: "cat",
       url: cat.url,
     }));
   }
 
   if (dogsResponse.status === "fulfilled") {
-    dogs = dogsResponse.value.data.map((dog) => ({
+    dogs = dogsResponse.value.data.slice(0, 4).map((dog) => ({
       type: "dog",
       url: dog.url,
     }));
