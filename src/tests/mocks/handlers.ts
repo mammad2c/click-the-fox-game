@@ -134,13 +134,11 @@ export const handlers = [
       }),
     );
   }),
-  rest.get(FOX_API, (req, res, ctx) => {
-    const fox = animalsData.find((item) => item.type === "fox");
-
+  rest.get(`${FOX_API}getfoxes`, (req, res, ctx) => {
     return res(
       ctx.json({
-        image: fox?.url,
-        link: fox?.url,
+        images: [mockPhotoUrl, mockPhotoUrl, mockPhotoUrl],
+        links: [mockPhotoUrl, mockPhotoUrl, mockPhotoUrl],
       }),
     );
   }),

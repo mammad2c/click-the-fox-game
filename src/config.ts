@@ -14,4 +14,10 @@ export const photosPath =
 
 export const { PORT, FOX_API = "", CAT_API = "", DOG_API = "" } = process.env;
 
+const { MAX_FILE_COUNT_CACHED: rawMaxFileCountCached } = process.env;
+
+export const MAX_FILE_COUNT_CACHED = rawMaxFileCountCached
+  ? Number(rawMaxFileCountCached)
+  : 60;
+
 export const winnerTypes = ["fox"];

@@ -10,6 +10,40 @@ import {
   getAnimalTypeByFileName,
 } from "./helpers";
 
+const generateSelectablePhotos = (data: fs.Dirent[]) => {
+  const { winners, others } = data
+    .filter((item) => !item.name.includes("sprite-"))
+    .reduce<{
+      winners: string[];
+      others: string[];
+    }>(
+      (acc, item) => {
+        const fileUrl = `${photosPath}/${item.name}`;
+        const type = getAnimalTypeByFileName(item.name);
+        const isWinnerType = winnerTypes.includes(type);
+
+        const key = isWinnerType ? "winners" : "others";
+
+        return {
+          ...acc,
+          [key]: [...acc[key], fileUrl],
+        };
+      },
+      {
+        winners: [],
+        others: [],
+      },
+    );
+
+  const winnersLength = winners.length;
+  const selectedWinnerIndex = Math.floor(Math.random() * winnersLength);
+  const selectedWinner = winners[selectedWinnerIndex];
+  const selectedOthers = shuffle(others).slice(0, 8);
+  const shuffledArray = shuffle([selectedWinner, ...selectedOthers]);
+
+  return shuffledArray;
+};
+
 const promiseSprite = (photos: string[]) =>
   new Promise<ImageSpriteResponseObj>((resolve, reject) => {
     spritesmith.run(
@@ -23,7 +57,7 @@ const promiseSprite = (photos: string[]) =>
         }
 
         const id = uuid4();
-        const imageSpriteFileName = `${photosPath}/${id}.jpg`;
+        const imageSpriteFileName = `${photosPath}/sprite-${id}.jpg`;
 
         await sharp(result.image).toFormat("jpg").toFile(imageSpriteFileName);
 
@@ -44,37 +78,6 @@ const promiseSprite = (photos: string[]) =>
       },
     );
   });
-
-const generateSelectablePhotos = (data: fs.Dirent[]) => {
-  const { winners, others } = data.reduce<{
-    winners: string[];
-    others: string[];
-  }>(
-    (acc, item) => {
-      const fileUrl = `${photosPath}/${item.name}`;
-      const type = getAnimalTypeByFileName(item.name);
-      const isWinnerType = winnerTypes.includes(type);
-      const key = isWinnerType ? "winners" : "others";
-
-      return {
-        ...acc,
-        [key]: [...acc[key], fileUrl],
-      };
-    },
-    {
-      winners: [],
-      others: [],
-    },
-  );
-
-  const winnersLength = winners.length;
-  const selectedWinnerIndex = Math.floor(Math.random() * winnersLength);
-  const selectedWinner = winners[selectedWinnerIndex];
-  const selectedOthers = shuffle(others).slice(0, 8);
-  const shuffledArray = shuffle([selectedWinner, ...selectedOthers]);
-
-  return shuffledArray;
-};
 
 const imageSprites = async () => {
   const files = fs.readdirSync(photosPath, {

@@ -1,7 +1,7 @@
 import { api } from "@/client/services";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import type { ImageSpriteResponseObj } from "@/server/services";
-import { initialPhotosState } from "./config";
+import { initialPhotosState, maxPreloadFiles } from "./config";
 import { action, PhotosState } from "./types";
 import { winnerTypes } from "@/config";
 
@@ -22,13 +22,24 @@ const imagesReducer = (state: PhotosState, action: action) => {
         return state;
       }
 
-      const { coordinates, imageSpriteFileName } =
-        payload as ImageSpriteResponseObj;
+      return {
+        ...state,
+        preloadFiles: [
+          ...state.preloadFiles,
+          payload as ImageSpriteResponseObj,
+        ],
+      };
+    }
+
+    case "create-current": {
+      const current = state.preloadFiles[0];
 
       return {
+        ...state,
+        currentFileName: current?.imageSpriteFileName,
+        currentCoordinates: current?.coordinates,
+        preloadFiles: state.preloadFiles.slice(1),
         isReady: true,
-        currentCoordinates: coordinates,
-        currentFile: imageSpriteFileName,
       };
     }
 
@@ -39,25 +50,65 @@ const imagesReducer = (state: PhotosState, action: action) => {
 };
 
 const useGameSceneController = () => {
-  const [{ isReady, currentFile, currentCoordinates }, dispatchPhotoState] =
-    useReducer(imagesReducer, initialPhotosState);
+  const [
+    { isReady, currentFileName, currentCoordinates, preloadFiles },
+    dispatchPhotoState,
+  ] = useReducer(imagesReducer, initialPhotosState);
+
+  const preloadInterval = useRef<NodeJS.Timer | null>(null);
+  const numberOfFetches = useRef<number>(0);
 
   const [score, setScore] = useState(0);
+
+  const canGameGetStarted = Boolean(
+    currentFileName && currentCoordinates && isReady,
+  );
+
+  const flag = useRef(false);
+
+  const stopFetchPreloadFiles = () => {
+    if (preloadInterval.current) {
+      clearInterval(preloadInterval.current);
+    }
+  };
 
   const fetchPhotos = debounce(() => {
     api({
       url: "photos",
-    }).then((res) => {
-      dispatchPhotoState({
-        type: "new-photo",
-        payload: res.data,
+    })
+      .then((res) => {
+        dispatchPhotoState({
+          type: "new-photo",
+          payload: res.data,
+        });
+      })
+      .catch(() => {
+        numberOfFetches.current -= 1;
       });
-    });
-  }, 500);
+  }, 300);
 
   useEffect(() => {
-    fetchPhotos();
-  }, []);
+    preloadInterval.current = setInterval(() => {
+      if (
+        preloadFiles.length < maxPreloadFiles &&
+        numberOfFetches.current < maxPreloadFiles
+      ) {
+        fetchPhotos();
+        numberOfFetches.current += 1;
+      }
+    }, 500);
+
+    if (preloadFiles.length === maxPreloadFiles && !flag.current) {
+      flag.current = true;
+      dispatchPhotoState({
+        type: "create-current",
+      });
+    }
+
+    return () => {
+      stopFetchPreloadFiles();
+    };
+  }, [preloadFiles.length]);
 
   const calculateScore = (type: string) => {
     setScore((currentScore) => {
@@ -67,13 +118,19 @@ const useGameSceneController = () => {
         return currentScore - 1;
       }
     });
+
+    dispatchPhotoState({
+      type: "create-current",
+    });
+    numberOfFetches.current -= 3;
   };
 
   return {
     score,
-    currentFile,
+    currentFileName,
     currentCoordinates,
     isReady,
+    canGameGetStarted,
     dispatchPhotoState,
     calculateScore,
   };

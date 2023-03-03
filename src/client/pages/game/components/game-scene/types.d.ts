@@ -1,12 +1,13 @@
-import { CoordinateObj } from "@/server/services";
+import { CoordinateObj, ImageSpriteResponseObj } from "@/server/services";
 
 export interface PhotosState {
   currentCoordinates: CoordinateObj[] | undefined;
-  currentFile: string | undefined;
+  currentFileName: string | undefined;
   isReady: boolean;
+  preloadFiles: ImageSpriteResponseObj[];
 }
 
 export interface action {
   payload?: unknown;
-  type: "new-photo";
+  type: "new-photo" | "create-current";
 }

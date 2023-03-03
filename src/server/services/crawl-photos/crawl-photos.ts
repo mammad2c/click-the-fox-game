@@ -5,10 +5,11 @@ import fs from "fs";
 import sharp from "sharp";
 
 const getFox = () => {
-  return axios({
-    url: FOX_API,
+  return axios<{ images: string[]; links: string[] }>({
+    baseURL: FOX_API,
+    url: "getfoxes",
     params: {
-      count: 1,
+      count: 4,
     },
     method: "GET",
   });
@@ -43,7 +44,7 @@ const getDogs = () => {
 const crawlPhotos = async () => {
   let dogs: PhotoSchema[] = [];
   let cats: PhotoSchema[] = [];
-  let fox = {};
+  let foxes: PhotoSchema[] = [];
 
   const [foxResponse, catsResponse, dogsResponse] = await Promise.allSettled([
     getFox(),
@@ -52,27 +53,27 @@ const crawlPhotos = async () => {
   ]);
 
   if (foxResponse.status === "fulfilled") {
-    fox = {
+    foxes = foxResponse.value.data.images.map((imageUrl) => ({
+      url: imageUrl,
       type: "fox",
-      url: foxResponse.value.data.image,
-    };
+    }));
   }
 
   if (catsResponse.status === "fulfilled") {
-    cats = catsResponse.value.data.slice(0, 4).map((cat) => ({
+    cats = catsResponse.value.data.map((cat) => ({
       type: "cat",
       url: cat.url,
     }));
   }
 
   if (dogsResponse.status === "fulfilled") {
-    dogs = dogsResponse.value.data.slice(0, 4).map((dog) => ({
+    dogs = dogsResponse.value.data.map((dog) => ({
       type: "dog",
       url: dog.url,
     }));
   }
 
-  const photos = [fox, ...cats, ...dogs] as PhotoSchema[];
+  const photos = [...foxes, ...cats, ...dogs] as PhotoSchema[];
 
   const downloadableImages = [];
 

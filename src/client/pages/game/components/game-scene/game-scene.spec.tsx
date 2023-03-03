@@ -1,5 +1,6 @@
 import { winnerTypes } from "@/config";
 import {
+  act,
   renderComponent,
   screen,
   userEvent,
@@ -9,7 +10,12 @@ import { GameScene } from "./game-scene";
 
 describe("GameScene", () => {
   it("should render at least one winner image", async () => {
+    vi.useFakeTimers();
+
     renderComponent(<GameScene />);
+
+    vi.advanceTimersByTime(3000);
+    vi.useRealTimers();
 
     // if we don't have a winner situation, then why we should play the game? :)
     expect(winnerTypes.length).toBeGreaterThan(0);
@@ -24,7 +30,10 @@ describe("GameScene", () => {
   });
 
   it("should calculate score based on the image clicks", async () => {
+    vi.useFakeTimers();
     const { container } = renderComponent(<GameScene />);
+    vi.advanceTimersByTime(3000);
+    vi.useRealTimers();
 
     await waitFor(async () => {
       expect(screen.getAllByRole("img")[0]).toBeTruthy();

@@ -4,24 +4,39 @@ import { Container, SimpleGrid } from "@/client/ui";
 import { useGameSceneController } from "./controller";
 
 const GameScene = () => {
-  const { currentFile, currentCoordinates, isReady, score, calculateScore } =
-    useGameSceneController();
+  const {
+    currentFileName,
+    currentCoordinates,
+    canGameGetStarted,
+    score,
+    calculateScore,
+  } = useGameSceneController();
 
   return (
     <Box maxW={1000} padding="16px">
-      <Container display="flex" justifyContent="center" mb={4}>
-        <Countdown duration={30} canStart={isReady} />
+      <Container display="flex" justifyContent="center" mb={4} fontSize="2xl">
+        <Box>
+          <Box as="span" display="inline-block" mr={2}>
+            Time left:
+          </Box>
+          <Countdown duration={30} canStart={canGameGetStarted} />
+        </Box>
         <Box mx={4}>|</Box>
-        <Box>Score: {score}</Box>
+        <Box>
+          Score:
+          <Box as="span" width={40} textAlign="center" ml={2}>
+            {score}
+          </Box>
+        </Box>
       </Container>
 
-      {currentCoordinates && currentFile && (
+      {canGameGetStarted && (
         <SimpleGrid
           columns={3}
           spacing={5}
           className="game-scene-images-wrapper"
         >
-          {currentCoordinates.map(({ id, x, y, height, type, width }) => (
+          {currentCoordinates?.map(({ id, x, y, height, type, width }) => (
             <Box textAlign="center" key={id}>
               <Box
                 margin="0 auto"
@@ -30,7 +45,7 @@ const GameScene = () => {
                 role="img"
                 aria-label={type}
                 style={{
-                  background: `-${x}px -${y}px url(${currentFile})`,
+                  background: `-${x}px -${y}px url(${currentFileName})`,
                 }}
                 onClick={() => calculateScore(type)}
               ></Box>
