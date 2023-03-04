@@ -27,4 +27,4 @@ public/photos/**/*.jpeg
 public/photos/**/*.gif
 public/photos/**/*.png
 public/photos/**/*.webp
-
+coverage

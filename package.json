@@ -17,7 +17,8 @@
     "format": "prettier ./**/*.{ts,tsx,js,jsx,css,scss,md,json} --write",
     "lint": "eslint ./**/*.{ts,tsx,js,jsx} --fix",
     "lint-staged": "lint-staged",
-    "test:unit": "vitest"
+    "test:unit": "vitest",
+    "test:unit:coverage": "vitest --coverage"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.1",
@@ -54,6 +55,7 @@
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "@vitejs/plugin-react-swc": "^3.2.0",
+    "@vitest/coverage-c8": "^0.29.2",
     "dotenv": "^16.0.3",
     "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
