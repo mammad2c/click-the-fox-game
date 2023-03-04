@@ -15,7 +15,11 @@ const addNewRecord = (newRecord: ScoreboardTableItem) => {
 
   const newDate = new Date();
 
-  const hour = `${newDate.getHours()}:${newDate.getMinutes()}:${newDate.getSeconds()}`;
+  const hours = `${newDate.getHours()}`.padStart(2, "0");
+  const minutes = `${newDate.getMinutes()}`.padStart(2, "0");
+  const seconds = `${newDate.getSeconds()}`.padStart(2, "0");
+
+  const date = `${newDate.toDateString()} - ${hours}:${minutes}:${seconds}`;
 
   const newTable = orderBy(
     [
@@ -23,7 +27,7 @@ const addNewRecord = (newRecord: ScoreboardTableItem) => {
       {
         ...newRecord,
         id: uuid4(),
-        date: `${newDate.toDateString()} - ${hour}`,
+        date,
       },
     ],
     ["score"],
