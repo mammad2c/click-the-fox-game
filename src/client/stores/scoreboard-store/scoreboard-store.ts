@@ -13,8 +13,19 @@ rawScoreboardStore.subscribe((state) => {
 const addNewRecord = (newRecord: ScoreboardTableItem) => {
   const { table } = rawScoreboardStore.getState();
 
+  const newDate = new Date();
+
+  const hour = `${newDate.getHours()}:${newDate.getMinutes()}:${newDate.getSeconds()}`;
+
   const newTable = orderBy(
-    [...table, { ...newRecord, id: uuid4(), date: new Date().toDateString() }],
+    [
+      ...table,
+      {
+        ...newRecord,
+        id: uuid4(),
+        date: `${newDate.toDateString()} - ${hour}`,
+      },
+    ],
     ["score"],
     "desc",
   );
