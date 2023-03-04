@@ -1,16 +1,10 @@
 import fs from "fs";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import { photosPath, PORT } from "../config";
+import { PORT } from "../config";
 import { app } from "./app";
 
 async function createServer() {
-  if (fs.existsSync(photosPath)) {
-    fs.rmSync(photosPath, {
-      force: true,
-      recursive: true,
-    });
-  }
   // Create Vite server in middleware mode and configure the app type as
   // 'custom', disabling Vite's own HTML serving logic so parent server
   // can take control
