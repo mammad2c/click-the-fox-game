@@ -64,6 +64,8 @@ const useGameSceneController = () => {
 
   const [isClickedOnPlayButton, setIsClickedOnPlayButton] = useState(false);
 
+  const cancelControllers = useRef<AbortController[]>([]);
+
   const navigate = useNavigate();
 
   const stopFetchPreloadFiles = () => {
@@ -73,9 +75,18 @@ const useGameSceneController = () => {
   };
 
   const fetchPhotos = debounce(() => {
+    const controller = new AbortController();
+
+    cancelControllers.current.push(controller);
+
     api({
       url: "photos",
+      signal: controller.signal,
     }).then((res) => {
+      cancelControllers.current = cancelControllers.current.filter(
+        (item) => item !== controller,
+      );
+
       dispatchPhotoState({
         type: "new-photo",
         payload: res.data,
@@ -139,6 +150,9 @@ const useGameSceneController = () => {
 
   useEffect(() => {
     return () => {
+      cancelControllers.current.forEach((cancelController) => {
+        cancelController.abort();
+      });
       stopFetchPreloadFiles();
     };
   }, []);
