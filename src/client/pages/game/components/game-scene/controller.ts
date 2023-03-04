@@ -6,14 +6,7 @@ import { action, PhotosState } from "./types";
 import { winnerTypes } from "@/config";
 import { gameStore, scoreboardStore } from "@/client/stores";
 import { useNavigate } from "react-router-dom";
-
-const debounce = (fn: (...args: unknown[]) => void, ms = 300) => {
-  let timeoutId: ReturnType<typeof setTimeout>;
-  return function (this: unknown, ...args: unknown[]) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn.apply(this, args), ms);
-  };
-};
+import { debounce } from "@/client/helpers";
 
 const imagesReducer = (state: PhotosState, action: action) => {
   switch (action.type) {
