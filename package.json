@@ -10,15 +10,16 @@
   "scripts": {
     "prepare": "husky install",
     "dev": "nodemon --watch '**/*.ts' --exec ts-node ./src/server/server.ts",
-    "build": "tsc && vite build",
-    "build:client": "vite build --outDir dist/client",
-    "build:server": "vite build --outDir dist/server --ssr src/entry-server.tsx",
+    "build": "rimraf public/photos && rimraf dist && tsc && tsc ./src/server/server.ts --outDir dist --esModuleInterop && yarn build:client && yarn build:server",
+    "build:client": "vite build --outDir dist/entry-client",
+    "build:server": "vite build --outDir dist/entry-server --ssr src/client/entry-server.tsx",
     "preview": "vite preview",
     "format": "prettier ./**/*.{ts,tsx,js,jsx,css,scss,md,json} --write",
     "lint": "eslint ./**/*.{ts,tsx,js,jsx} --fix",
     "lint-staged": "lint-staged",
     "test:unit": "vitest",
-    "test:unit:coverage": "vitest run --coverage"
+    "test:unit:coverage": "vitest run --coverage",
+    "serve": "NODE_ENV=production node dist/server/server.js"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.1",
@@ -66,6 +67,7 @@
     "msw": "^1.1.0",
     "nodemon": "^2.0.20",
     "prettier": "^2.8.4",
+    "rimraf": "^4.3.0",
     "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.5",
