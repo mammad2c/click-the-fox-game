@@ -3,6 +3,7 @@ import { FOX_API, CAT_API, DOG_API, photosPath } from "../../../config";
 import { PhotoSchema, SingleResourceCatOrDog } from "./types";
 import fs from "fs";
 import sharp from "sharp";
+import http from "https";
 
 const getFox = () => {
   return axios<{ images: string[]; links: string[] }>({
@@ -21,7 +22,6 @@ const getCats = () => {
     url: "images/search",
     params: {
       limit: 10,
-      size: "small",
       mime_types: "jpg",
     },
     method: "GET",
@@ -34,7 +34,6 @@ const getDogs = () => {
     url: "images/search",
     params: {
       limit: 10,
-      size: "small",
       mime_types: "jpg",
     },
     method: "GET",
@@ -79,45 +78,54 @@ const crawlPhotos = async () => {
 
   for (const photo of photos) {
     downloadableImages.push(
-      Promise.resolve(
-        axios({
-          url: photo.url,
-          maxContentLength: -1,
-          maxBodyLength: -1,
-          responseType: "arraybuffer",
-          params: {
-            type: photo.type,
-          },
-        }),
-      ),
+      new Promise((resolve, reject) => {
+        http
+          .request(photo.url, async (response) => {
+            const dataBuffer: Uint8Array[] = [];
+
+            response.on("data", function (chunk) {
+              dataBuffer.push(chunk);
+            });
+
+            response.on("end", function () {
+              const bufferedPhoto = Buffer.concat(dataBuffer);
+
+              const { type, url } = photo;
+              const fileUrl = new URL(url);
+              const splitPathname = fileUrl.pathname.split("/");
+              const finalFileName =
+                splitPathname[splitPathname.length - 1].split(".")[0];
+
+              if (!fs.existsSync(photosPath)) {
+                fs.mkdirSync(photosPath);
+              }
+
+              if (bufferedPhoto) {
+                sharp(bufferedPhoto)
+                  .resize(200, 200)
+                  .toFormat("jpg", { mozjpeg: true, quality: 60 })
+                  .toFile(`${photosPath}/${type}-${finalFileName}.jpg`)
+                  .then(() => {
+                    resolve(true);
+                  })
+                  .catch(() => {
+                    resolve(true);
+                  });
+              } else {
+                resolve(true);
+              }
+            });
+
+            response.on("error", (err) => {
+              reject(err);
+            });
+          })
+          .end();
+      }),
     );
   }
 
-  const bufferedPhotos = await Promise.all(downloadableImages);
-
-  const convertiblePhotos = [];
-
-  for (const bufferedPhoto of bufferedPhotos) {
-    const url = new URL(bufferedPhoto.config.url as string);
-    const splitPathname = url.pathname.split("/");
-    const finalFileName = splitPathname[splitPathname.length - 1].split(".")[0];
-    const { type } = bufferedPhoto.config.params;
-
-    if (!fs.existsSync(photosPath)) {
-      fs.mkdirSync(photosPath);
-    }
-
-    convertiblePhotos.push(
-      Promise.resolve(
-        sharp(bufferedPhoto.data)
-          .resize(200, 200)
-          .toFormat("jpg", { mozjpeg: true, quality: 60 })
-          .toFile(`${photosPath}/${type}-${finalFileName}.jpg`),
-      ),
-    );
-  }
-
-  await Promise.all(convertiblePhotos);
+  await Promise.all(downloadableImages);
 };
 
 export { crawlPhotos };

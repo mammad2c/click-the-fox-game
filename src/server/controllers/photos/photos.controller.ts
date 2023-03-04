@@ -24,7 +24,7 @@ class PhotosController {
       }
     } catch (err) {
       return res.status(500).json({
-        error: (err as Error).message,
+        error: err,
       });
     }
   }
