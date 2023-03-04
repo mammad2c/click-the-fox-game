@@ -25,7 +25,9 @@ describe("GameScene", () => {
     // if we don't have a winner situation, then why we should play the game? :)
     expect(winnerTypes.length).toBeGreaterThan(0);
 
-    await waitFor(() => {
+    await waitFor(async () => {
+      await userEvent.click(screen.getByText(/start the game/i));
+
       const isWinnerTypeExist = winnerTypes.some((winnerType) => {
         return screen.queryAllByLabelText(winnerType)[0];
       });
@@ -41,6 +43,8 @@ describe("GameScene", () => {
     vi.useRealTimers();
 
     await waitFor(async () => {
+      await userEvent.click(screen.getByText(/start the game/i));
+
       expect(screen.getAllByRole("img")[0]).toBeTruthy();
     });
 

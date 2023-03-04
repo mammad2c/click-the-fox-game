@@ -1,6 +1,6 @@
 import { Countdown } from "@/client/components";
 import { Box } from "@/client/ui";
-import { Container, SimpleGrid } from "@/client/ui";
+import { Container, SimpleGrid, Button, Progress } from "@/client/ui";
 import { useGameSceneController } from "./controller";
 
 const GameScene = () => {
@@ -9,9 +9,38 @@ const GameScene = () => {
     currentCoordinates,
     canGameGetStarted,
     score,
+    progress,
+    showTheProgressBar,
+    showThePlayButton,
+    handleClickOnPlayButton,
     onFinish,
     calculateScore,
   } = useGameSceneController();
+
+  if (showTheProgressBar) {
+    return (
+      <Box>
+        <Progress
+          value={progress}
+          size="lg"
+          rounded="full"
+          max={95}
+          colorScheme="yellow"
+        />
+        {progress <= 20 && <Box>Preparing the game</Box>}
+        {progress > 20 && progress < 75 && <Box>Loading resources</Box>}
+        {progress >= 75 && <Box>Almost done! be ready to start</Box>}
+      </Box>
+    );
+  }
+
+  if (showThePlayButton) {
+    return (
+      <Box>
+        <Button onClick={handleClickOnPlayButton}>Start the game</Button>
+      </Box>
+    );
+  }
 
   return (
     <Box maxW={1000} padding="16px">

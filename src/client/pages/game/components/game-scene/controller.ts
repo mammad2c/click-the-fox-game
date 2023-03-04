@@ -67,11 +67,7 @@ const useGameSceneController = () => {
 
   const [score, setScore] = useState(0);
 
-  const canGameGetStarted = Boolean(
-    currentFileName && currentCoordinates && isReady && !isFinished,
-  );
-
-  const flag = useRef(false);
+  const [isClickedOnPlayButton, setIsClickedOnPlayButton] = useState(false);
 
   const navigate = useNavigate();
 
@@ -108,13 +104,6 @@ const useGameSceneController = () => {
       }
     }, 500);
 
-    if (preloadFiles.length === maxPreloadFiles && !flag.current) {
-      flag.current = true;
-      dispatchPhotoState({
-        type: "create-current",
-      });
-    }
-
     if (isFinished) {
       stopFetchPreloadFiles();
     }
@@ -150,15 +139,38 @@ const useGameSceneController = () => {
     navigate("/scoreboard");
   };
 
+  const handleClickOnPlayButton = () => {
+    setIsClickedOnPlayButton(true);
+    dispatchPhotoState({
+      type: "create-current",
+    });
+  };
+
+  const canGameGetStarted = Boolean(
+    currentFileName && currentCoordinates && isReady && !isFinished,
+  );
+
+  const preloadFilesLength = preloadFiles.length;
+
+  const progress = preloadFilesLength >= 5 ? 100 : preloadFilesLength * 25;
+
+  const showThePlayButton = progress >= 100 && !isClickedOnPlayButton;
+
+  const showTheProgressBar = !showThePlayButton && !canGameGetStarted;
+
   return {
     score,
     currentFileName,
     currentCoordinates,
     isReady,
+    progress,
     canGameGetStarted,
+    showThePlayButton,
+    showTheProgressBar,
     dispatchPhotoState,
     calculateScore,
     onFinish,
+    handleClickOnPlayButton,
   };
 };
 
