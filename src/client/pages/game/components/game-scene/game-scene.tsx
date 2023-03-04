@@ -46,7 +46,7 @@ const GameScene = () => {
   }
 
   return (
-    <Box maxW={1000} padding="16px">
+    <Box maxW={1000}>
       <Container display="flex" justifyContent="center" mb={4} fontSize="2xl">
         <Box>
           <Box as="span" display="inline-block" mr={2}>
