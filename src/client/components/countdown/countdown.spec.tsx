@@ -2,6 +2,15 @@ import { act, renderComponent, screen } from "@/tests/render-component";
 import { Countdown } from "./countdown";
 
 describe("Countdown", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+  });
+
   it("should render in the correct format based on the duration where it is based on second", () => {
     // 30 seconds
     const { rerender } = renderComponent(<Countdown duration={30} />);
@@ -47,8 +56,6 @@ describe("Countdown", () => {
   it("should start or stop the countdown based on canStart props", () => {
     const { rerender } = renderComponent(<Countdown duration={30} />);
 
-    vi.useFakeTimers();
-
     // after 15 seconds, it should not be started
     act(() => {
       vi.advanceTimersByTime(15 * 1000);
@@ -64,13 +71,9 @@ describe("Countdown", () => {
 
     expect(screen.queryByText("00:00:30")).not.toBeTruthy();
     expect(screen.getByText("00:00:15")).toBeTruthy();
-
-    vi.useRealTimers();
   });
 
   it("should start countdown and continue until it reaches 0", () => {
-    vi.useFakeTimers();
-
     // 30 seconds
     const { rerender } = renderComponent(
       <Countdown duration={30} canStart={true} />,
@@ -102,13 +105,9 @@ describe("Countdown", () => {
       vi.advanceTimersByTime(40000 * 1000);
     });
     expect(screen.getByText("00:00:00")).toBeTruthy();
-
-    vi.useRealTimers();
   });
 
   it("should trigger onFinish when countdown reaches end", () => {
-    vi.useFakeTimers();
-
     const onFinish = vi.fn();
 
     renderComponent(<Countdown duration={30} canStart onFinish={onFinish} />);
@@ -118,6 +117,5 @@ describe("Countdown", () => {
     });
 
     expect(onFinish).toBeCalled();
-    vi.useRealTimers();
   });
 });
