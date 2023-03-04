@@ -1,6 +1,7 @@
 import { Countdown } from "@/client/components";
 import { Box } from "@/client/ui";
 import { Container, SimpleGrid, Button, Progress } from "@/client/ui";
+import { motion } from "framer-motion";
 import { useGameSceneController } from "./controller";
 
 const GameScene = () => {
@@ -67,24 +68,32 @@ const GameScene = () => {
       {canGameGetStarted && (
         <SimpleGrid
           columns={3}
-          spacing={5}
+          spacing={8}
           className="game-scene-images-wrapper"
         >
           {currentCoordinates?.map(({ id, x, y, height, type, width }) => (
-            <Box textAlign="center" key={id}>
-              <Box
-                margin="0 auto"
-                width={width}
-                height={height}
-                role="img"
-                aria-label={type}
-                cursor="pointer"
-                style={{
-                  background: `-${x}px -${y}px url(${currentFileName})`,
-                }}
-                onClick={() => calculateScore(type)}
-              ></Box>
-            </Box>
+            <Box
+              as={motion.div}
+              initial={{ opacity: 0, scale: 0.8, y: -10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition="0.3s ease"
+              key={id}
+              margin="0 auto"
+              width={width}
+              height={height}
+              role="img"
+              aria-label={type}
+              cursor="pointer"
+              rounded="md"
+              border="2px solid black"
+              whileHover={{
+                scale: 1.1,
+              }}
+              style={{
+                background: `-${x}px -${y}px url(${currentFileName})`,
+              }}
+              onClick={() => calculateScore(type)}
+            ></Box>
           ))}
         </SimpleGrid>
       )}

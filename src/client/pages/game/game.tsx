@@ -14,7 +14,7 @@ const Game = () => {
       flexDirection="column"
       width="100%"
     >
-      <Text fontSize="4xl" as="h1" mb={4}>
+      <Text fontSize="4xl" as="h1">
         Click the FOX!
       </Text>
       {status === "initial-setup" && (
