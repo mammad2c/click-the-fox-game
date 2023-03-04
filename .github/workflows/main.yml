@@ -1,4 +1,4 @@
-- name: Setup Node.js environment
+name:
   uses: actions/setup-node@v3.6.0
   with:
     node-version: 14.18.0
