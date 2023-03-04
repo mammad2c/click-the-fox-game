@@ -159,7 +159,9 @@ const useGameSceneController = () => {
   const preloadFilesLength = preloadFiles.length;
 
   const progress =
-    preloadFilesLength >= maxPreloadFiles ? 100 : preloadFilesLength * 25;
+    preloadFilesLength >= maxPreloadFiles
+      ? 100
+      : Math.floor(100 / maxPreloadFiles) * preloadFilesLength;
 
   const showThePlayButton = progress >= 100 && !isClickedOnPlayButton;
 
