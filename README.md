@@ -1,6 +1,6 @@
 # Click the fox
 
-This is a game in that you should click on the foxes in 30 minutes as much as you can.
+This is a game that you should click on the foxes in 30 seconds as much as you can.
 
 ## Architecture
 

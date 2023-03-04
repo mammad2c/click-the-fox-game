@@ -1,4 +1,6 @@
-# Server
+# server
+
+Our server application backed by `Node.js` and `Express.js`.
 
 ## router
 
