@@ -1,16 +1,16 @@
 on:
   push:
     branches:
-    - master
-    - release/*
+      - master
+      - release/*
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 14.18.0
-    - run: yarn install --frozen-lockfile
-    - run: yarn test:unit --coverage
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14.18.0
+      - run: yarn install --frozen-lockfile
+      - run: yarn test:unit:coverage
