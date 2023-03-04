@@ -6,7 +6,7 @@ import { action, PhotosState } from "./types";
 import { winnerTypes } from "@/config";
 import { gameStore, scoreboardStore } from "@/client/stores";
 import { useNavigate } from "react-router-dom";
-import { debounce } from "@/client/helpers";
+import { debounce } from "@/shared";
 
 const imagesReducer = (state: PhotosState, action: action) => {
   switch (action.type) {
