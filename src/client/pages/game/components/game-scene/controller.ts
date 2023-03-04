@@ -1,7 +1,7 @@
 import { api } from "@/client/services";
 import { useEffect, useReducer, useRef, useState } from "react";
 import type { ImageSpriteResponseObj } from "@/server/services";
-import { gameDuration, initialPhotosState, maxPreloadFiles } from "./config";
+import { initialPhotosState, maxPreloadFiles } from "./config";
 import { action, PhotosState } from "./types";
 import { winnerTypes } from "@/config";
 import { gameStore, scoreboardStore } from "@/client/stores";

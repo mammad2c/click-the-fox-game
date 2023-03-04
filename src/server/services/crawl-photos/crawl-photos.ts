@@ -80,7 +80,7 @@ const crawlPhotos = async () => {
     downloadableImages.push(
       new Promise((resolve, reject) => {
         http
-          .request(photo.url, async (response) => {
+          .get(photo.url, async (response) => {
             const dataBuffer: Uint8Array[] = [];
 
             response.on("data", function (chunk) {
