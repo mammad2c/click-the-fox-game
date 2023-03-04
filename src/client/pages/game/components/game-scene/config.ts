@@ -9,3 +9,6 @@ export const initialPhotosState: PhotosState = {
 };
 
 export const maxPreloadFiles = 5;
+
+export const gameDuration =
+  import.meta.env.MODE.toLowerCase() === "test" ? 1 : 30; // in seconds

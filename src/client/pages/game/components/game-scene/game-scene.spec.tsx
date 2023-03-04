@@ -6,6 +6,7 @@ import {
   userEvent,
   waitFor,
 } from "@/tests/render-component";
+import { gameDuration } from "./config";
 import { GameScene } from "./game-scene";
 
 beforeEach(() => {
@@ -27,13 +28,13 @@ describe("GameScene", () => {
 
     await waitFor(async () => {
       await userEvent.click(screen.getByText(/start the game/i));
-
-      const isWinnerTypeExist = winnerTypes.some((winnerType) => {
-        return screen.queryAllByLabelText(winnerType)[0];
-      });
-
-      expect(isWinnerTypeExist).toBe(true);
     });
+
+    const isWinnerTypeExist = winnerTypes.some((winnerType) => {
+      return screen.queryAllByLabelText(winnerType)[0];
+    });
+
+    expect(isWinnerTypeExist).toBe(true);
   });
 
   it("should calculate score based on the image clicks", async () => {
@@ -44,9 +45,9 @@ describe("GameScene", () => {
 
     await waitFor(async () => {
       await userEvent.click(screen.getByText(/start the game/i));
-
-      expect(screen.getAllByRole("img")[0]).toBeTruthy();
     });
+
+    expect(screen.getAllByRole("img")[0]).toBeTruthy();
 
     // we should increase the score by clicking on a winner type
     const existedWinnerTypeInDocument = winnerTypes.find((winnerType) => {
@@ -91,37 +92,23 @@ describe("GameScene", () => {
     expect(screen.getByText(/score:/i)).toHaveTextContent(/1/i);
   });
 
-  // TODO: I should complete this test later
-  // it.only("should finish the game when countdown reaches end", async () => {
-  //   vi.useFakeTimers();
+  it(
+    "should finish the game when countdown reaches end",
+    async () => {
+      renderComponent(<GameScene />);
 
-  //   const { debug } = renderComponent(<GameScene />);
+      await waitFor(async () => {
+        await userEvent.click(screen.getByText(/start the game/i));
+      });
 
-  //   act(() => {
-  //     vi.advanceTimersByTime(20 * 1000);
-  //   });
-
-  //   vi.useRealTimers();
-
-  //   await waitFor(async () => {
-  //     expect(screen.getAllByRole("img")[0]).toBeTruthy();
-  //   });
-
-  //   act(() => {
-  //     vi.useFakeTimers();
-  //     vi.advanceTimersByTime(60 * 1000);
-  //     // vi.runOnlyPendingTimersAsync();
-  //     // vi.setSystemTime(new Date().getTime() + 30 * 1000);
-  //     // vi.runAllTicks();
-  //   });
-
-  //   // await waitFor(() => {
-  //   //   expect(screen.getByText("00:00:00")).toBeTruthy();
-  //   // });
-
-  //   debug();
-
-  //   // expect(gameStore.getState().status).toBe("initial-setup");
-  //   // expect(window.location.pathname).toBe("scoreboard");
-  // });
+      await waitFor(
+        () => {
+          expect(gameStore.getState().status).toBe("initial-setup");
+          expect(window.location.pathname).toBe("/scoreboard");
+        },
+        { timeout: gameDuration * 1000 + 1000 },
+      );
+    },
+    gameDuration * 1000 + 1000,
+  );
 });

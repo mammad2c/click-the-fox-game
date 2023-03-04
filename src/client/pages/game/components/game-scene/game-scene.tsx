@@ -2,6 +2,7 @@ import { Countdown } from "@/client/components";
 import { Box } from "@/client/ui";
 import { Container, SimpleGrid, Button, Progress } from "@/client/ui";
 import { motion } from "framer-motion";
+import { gameDuration } from "./config";
 import { useGameSceneController } from "./controller";
 
 const GameScene = () => {
@@ -14,7 +15,6 @@ const GameScene = () => {
     showTheProgressBar,
     showThePlayButton,
     handleClickOnPlayButton,
-    onFinish,
     calculateScore,
   } = useGameSceneController();
 
@@ -50,11 +50,7 @@ const GameScene = () => {
           <Box as="span" display="inline-block" mr={2}>
             Time left:
           </Box>
-          <Countdown
-            duration={30}
-            canStart={canGameGetStarted}
-            onFinish={onFinish}
-          />
+          <Countdown duration={gameDuration} canStart={canGameGetStarted} />
         </Box>
         <Box mx={4}>|</Box>
         <Box>

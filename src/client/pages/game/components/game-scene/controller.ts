@@ -1,7 +1,7 @@
 import { api } from "@/client/services";
 import { useEffect, useReducer, useRef, useState } from "react";
 import type { ImageSpriteResponseObj } from "@/server/services";
-import { initialPhotosState, maxPreloadFiles } from "./config";
+import { gameDuration, initialPhotosState, maxPreloadFiles } from "./config";
 import { action, PhotosState } from "./types";
 import { winnerTypes } from "@/config";
 import { gameStore, scoreboardStore } from "@/client/stores";
@@ -67,13 +67,23 @@ const useGameSceneController = () => {
 
   const [score, setScore] = useState(0);
 
+  const scoreRef = useRef(score);
+
   const [isClickedOnPlayButton, setIsClickedOnPlayButton] = useState(false);
+
+  const gameTimer = useRef<NodeJS.Timeout | null>(null);
 
   const navigate = useNavigate();
 
   const stopFetchPreloadFiles = () => {
     if (preloadInterval.current) {
       clearInterval(preloadInterval.current);
+    }
+  };
+
+  const stopGameTimer = () => {
+    if (gameTimer.current) {
+      clearTimeout(gameTimer.current);
     }
   };
 
@@ -90,7 +100,7 @@ const useGameSceneController = () => {
       .catch(() => {
         numberOfFetches.current -= 1;
       });
-  }, 300);
+  }, 100);
 
   useEffect(() => {
     preloadInterval.current = setInterval(() => {
@@ -102,15 +112,7 @@ const useGameSceneController = () => {
         fetchPhotos();
         numberOfFetches.current += 1;
       }
-    }, 500);
-
-    if (isFinished) {
-      stopFetchPreloadFiles();
-    }
-
-    return () => {
-      stopFetchPreloadFiles();
-    };
+    }, 150);
   }, [preloadFiles.length, isFinished]);
 
   const calculateScore = (type: string) => {
@@ -125,26 +127,43 @@ const useGameSceneController = () => {
     dispatchPhotoState({
       type: "create-current",
     });
+
     numberOfFetches.current -= 3;
   };
 
   const onFinish = () => {
     scoreboardStore.addNewRecord({
       name: gameStore.getState().name,
-      score,
+      score: scoreRef.current,
     });
 
     dispatchPhotoState({ type: "finish" });
+
     gameStore.changeStatus("initial-setup");
+
     navigate("/scoreboard");
   };
 
   const handleClickOnPlayButton = () => {
     setIsClickedOnPlayButton(true);
+
     dispatchPhotoState({
       type: "create-current",
     });
+
+    gameTimer.current = setTimeout(() => {
+      onFinish();
+    }, gameDuration * 1000);
   };
+
+  useEffect(() => {
+    return () => {
+      stopGameTimer();
+      stopFetchPreloadFiles();
+    };
+  }, []);
+
+  scoreRef.current = score;
 
   const canGameGetStarted = Boolean(
     currentFileName && currentCoordinates && isReady && !isFinished,
@@ -169,7 +188,6 @@ const useGameSceneController = () => {
     showTheProgressBar,
     dispatchPhotoState,
     calculateScore,
-    onFinish,
     handleClickOnPlayButton,
   };
 };
