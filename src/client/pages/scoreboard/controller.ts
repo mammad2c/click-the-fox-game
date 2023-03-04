@@ -29,7 +29,7 @@ const useScoreboardController = () => {
     },
   ];
 
-  return { table, headers, mounted };
+  return { table, headers, mounted, clearTable: scoreboardStore.clearTable };
 };
 
 export { useScoreboardController };

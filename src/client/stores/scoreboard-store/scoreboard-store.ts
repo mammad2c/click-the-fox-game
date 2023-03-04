@@ -27,6 +27,15 @@ const addNewRecord = (newRecord: ScoreboardTableItem) => {
   });
 };
 
-const scoreboardStore = { ...rawScoreboardStore, addNewRecord };
+const clearTable = () => {
+  rawScoreboardStore.setState((currentState) => {
+    return {
+      ...currentState,
+      table: [],
+    };
+  });
+};
+
+const scoreboardStore = { ...rawScoreboardStore, addNewRecord, clearTable };
 
 export { scoreboardStore };

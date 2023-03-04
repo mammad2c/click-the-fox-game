@@ -2,7 +2,7 @@ import { Box, Button, Container, Table, Text } from "@/client/ui";
 import { useScoreboardController } from "./controller";
 
 const Scoreboard = () => {
-  const { table, headers, mounted } = useScoreboardController();
+  const { table, headers, mounted, clearTable } = useScoreboardController();
 
   return (
     <Container py={8} maxW="container.lg">
@@ -16,6 +16,15 @@ const Scoreboard = () => {
         </Button>
         <Button mx={2} to="/game">
           Play
+        </Button>
+        <Button
+          mx={2}
+          backgroundColor="red"
+          onClick={clearTable}
+          color="white"
+          _hover={{ color: "black", opacity: 0.7 }}
+        >
+          Clear the table
         </Button>
       </Box>
     </Container>
