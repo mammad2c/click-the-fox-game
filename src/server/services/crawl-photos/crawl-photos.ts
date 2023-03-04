@@ -79,48 +79,46 @@ const crawlPhotos = async () => {
   for (const photo of photos) {
     downloadableImages.push(
       new Promise((resolve, reject) => {
-        http
-          .get(photo.url, async (response) => {
-            const dataBuffer: Uint8Array[] = [];
+        http.get(photo.url, async (response) => {
+          const dataBuffer: Uint8Array[] = [];
 
-            response.on("data", function (chunk) {
-              dataBuffer.push(chunk);
-            });
+          response.on("data", function (chunk) {
+            dataBuffer.push(chunk);
+          });
 
-            response.on("end", function () {
-              const bufferedPhoto = Buffer.concat(dataBuffer);
+          response.on("end", function () {
+            const bufferedPhoto = Buffer.concat(dataBuffer);
 
-              const { type, url } = photo;
-              const fileUrl = new URL(url);
-              const splitPathname = fileUrl.pathname.split("/");
-              const finalFileName =
-                splitPathname[splitPathname.length - 1].split(".")[0];
+            const { type, url } = photo;
+            const fileUrl = new URL(url);
+            const splitPathname = fileUrl.pathname.split("/");
+            const finalFileName =
+              splitPathname[splitPathname.length - 1].split(".")[0];
 
-              if (!fs.existsSync(photosPath)) {
-                fs.mkdirSync(photosPath);
-              }
+            if (!fs.existsSync(photosPath)) {
+              fs.mkdirSync(photosPath);
+            }
 
-              sharp(bufferedPhoto)
-                .resize(200, 200)
-                .toFormat("jpg", { mozjpeg: true, quality: 60 })
-                .toFile(`${photosPath}/${type}-${finalFileName}.jpg`)
-                .then(() => {
-                  resolve(true);
-                })
-                .catch(() => {
-                  resolve(true);
-                });
-            });
+            sharp(bufferedPhoto)
+              .resize(200, 200)
+              .toFormat("jpg", { mozjpeg: true, quality: 60 })
+              .toFile(`${photosPath}/${type}-${finalFileName}.jpg`)
+              .then(() => {
+                resolve(true);
+              })
+              .catch(() => {
+                resolve(true);
+              });
+          });
 
-            response.on("error", (err) => {
-              reject(err);
-            });
+          response.on("error", (err) => {
+            reject(err);
+          });
 
-            response.on("close", () => {
-              resolve(true);
-            });
-          })
-          .end();
+          response.on("close", () => {
+            resolve(true);
+          });
+        });
       }),
     );
   }
