@@ -42,6 +42,14 @@ const imagesReducer = (state: PhotosState, action: action) => {
       return { ...initialPhotosState, isFinished: true };
     }
 
+    case "restart": {
+      return initialPhotosState;
+    }
+
+    case "fetch-error": {
+      return { ...state, errorsCount: state.errorsCount + 1 };
+    }
+
     default: {
       return state;
     }
@@ -50,7 +58,14 @@ const imagesReducer = (state: PhotosState, action: action) => {
 
 const useGameSceneController = () => {
   const [
-    { isReady, currentFileName, currentCoordinates, preloadFiles, isFinished },
+    {
+      isReady,
+      currentFileName,
+      currentCoordinates,
+      preloadFiles,
+      isFinished,
+      errorsCount,
+    },
     dispatchPhotoState,
   ] = useReducer(imagesReducer, initialPhotosState);
 
@@ -82,19 +97,27 @@ const useGameSceneController = () => {
     api({
       url: "photos",
       signal: controller.signal,
-    }).then((res) => {
-      cancelControllers.current = cancelControllers.current.filter(
-        (item) => item !== controller,
-      );
+    })
+      .then((res) => {
+        cancelControllers.current = cancelControllers.current.filter(
+          (item) => item !== controller,
+        );
 
-      dispatchPhotoState({
-        type: "new-photo",
-        payload: res.data,
+        dispatchPhotoState({
+          type: "new-photo",
+          payload: res.data,
+        });
+      })
+      .catch(() => {
+        dispatchPhotoState({
+          type: "fetch-error",
+        });
       });
-    });
   }, 100);
 
-  useEffect(() => {
+  const startFetchPreloadPhotos = () => {
+    stopFetchPreloadFiles();
+
     preloadInterval.current = setInterval(() => {
       if (
         preloadFiles.length < maxPreloadFiles &&
@@ -109,6 +132,10 @@ const useGameSceneController = () => {
     if (isReady && !canGameGetStarted) {
       dispatchPhotoState({ type: "create-current" });
     }
+  };
+
+  useEffect(() => {
+    startFetchPreloadPhotos();
   }, [preloadFiles.length, isFinished]);
 
   const calculateScore = (type: string) => {
@@ -148,6 +175,16 @@ const useGameSceneController = () => {
     });
   };
 
+  const handleRestart = () => {
+    numberOfFetches.current = 0;
+
+    dispatchPhotoState({
+      type: "restart",
+    });
+
+    startFetchPreloadPhotos();
+  };
+
   useEffect(() => {
     return () => {
       cancelControllers.current.forEach((cancelController) => {
@@ -176,6 +213,14 @@ const useGameSceneController = () => {
 
   const isFetchingDuringGame = isReady && !canGameGetStarted;
 
+  const showErrorStatus =
+    errorsCount > 0 &&
+    (errorsCount >= preloadFilesLength || preloadFilesLength < maxPreloadFiles);
+
+  if (showErrorStatus) {
+    stopFetchPreloadFiles();
+  }
+
   return {
     score,
     currentFileName,
@@ -186,10 +231,12 @@ const useGameSceneController = () => {
     showThePlayButton,
     showTheProgressBar,
     isFetchingDuringGame,
+    showErrorStatus,
     dispatchPhotoState,
     calculateScore,
     onFinish,
     handleClickOnPlayButton,
+    handleRestart,
   };
 };
 

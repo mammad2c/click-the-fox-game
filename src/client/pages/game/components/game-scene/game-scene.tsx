@@ -15,10 +15,23 @@ const GameScene = () => {
     showTheProgressBar,
     showThePlayButton,
     isFetchingDuringGame,
+    showErrorStatus,
     onFinish,
     handleClickOnPlayButton,
     calculateScore,
+    handleRestart,
   } = useGameSceneController();
+
+  if (showErrorStatus) {
+    return (
+      <Box textAlign="center">
+        <Box color="red" mb={4}>
+          We faced some errors.
+        </Box>
+        <Button onClick={handleRestart}> Try again</Button>
+      </Box>
+    );
+  }
 
   if (showTheProgressBar) {
     return (

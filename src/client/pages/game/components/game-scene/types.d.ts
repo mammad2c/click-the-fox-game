@@ -6,9 +6,10 @@ export interface PhotosState {
   isReady: boolean;
   preloadFiles: ImageSpriteResponseObj[];
   isFinished: boolean;
+  errorsCount: number;
 }
 
 export interface action {
   payload?: unknown;
-  type: "new-photo" | "create-current" | "finish";
+  type: "new-photo" | "create-current" | "finish" | "restart" | "fetch-error";
 }

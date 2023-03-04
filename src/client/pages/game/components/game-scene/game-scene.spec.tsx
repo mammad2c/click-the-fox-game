@@ -95,7 +95,10 @@ describe("GameScene", () => {
   it(
     "should finish the game when countdown reaches end",
     async () => {
+      vi.useFakeTimers();
       renderComponent(<GameScene />);
+      vi.advanceTimersByTime(3000);
+      vi.useRealTimers();
 
       await waitFor(async () => {
         await userEvent.click(screen.getByText(/start the game/i));

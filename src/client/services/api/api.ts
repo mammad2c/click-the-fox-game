@@ -27,7 +27,7 @@ api.interceptors.response.use(
       description: message,
     });
 
-    return error;
+    throw error;
   },
 );
 
