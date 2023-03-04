@@ -14,6 +14,8 @@ const GameScene = () => {
     progress,
     showTheProgressBar,
     showThePlayButton,
+    isFetchingDuringGame,
+    onFinish,
     handleClickOnPlayButton,
     calculateScore,
   } = useGameSceneController();
@@ -50,7 +52,11 @@ const GameScene = () => {
           <Box as="span" display="inline-block" mr={2}>
             Time left:
           </Box>
-          <Countdown duration={gameDuration} canStart={canGameGetStarted} />
+          <Countdown
+            duration={gameDuration}
+            canStart={canGameGetStarted}
+            onFinish={onFinish}
+          />
         </Box>
         <Box mx={4}>|</Box>
         <Box>
@@ -60,6 +66,8 @@ const GameScene = () => {
           </Box>
         </Box>
       </Container>
+
+      {isFetchingDuringGame && <Box textAlign="center">Loading ...</Box>}
 
       {canGameGetStarted && (
         <SimpleGrid

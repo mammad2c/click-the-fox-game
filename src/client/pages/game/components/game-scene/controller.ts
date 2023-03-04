@@ -71,8 +71,6 @@ const useGameSceneController = () => {
 
   const [isClickedOnPlayButton, setIsClickedOnPlayButton] = useState(false);
 
-  const gameTimer = useRef<NodeJS.Timeout | null>(null);
-
   const navigate = useNavigate();
 
   const stopFetchPreloadFiles = () => {
@@ -81,25 +79,15 @@ const useGameSceneController = () => {
     }
   };
 
-  const stopGameTimer = () => {
-    if (gameTimer.current) {
-      clearTimeout(gameTimer.current);
-    }
-  };
-
   const fetchPhotos = debounce(() => {
     api({
       url: "photos",
-    })
-      .then((res) => {
-        dispatchPhotoState({
-          type: "new-photo",
-          payload: res.data,
-        });
-      })
-      .catch(() => {
-        numberOfFetches.current -= 1;
+    }).then((res) => {
+      dispatchPhotoState({
+        type: "new-photo",
+        payload: res.data,
       });
+    });
   }, 100);
 
   useEffect(() => {
@@ -113,6 +101,10 @@ const useGameSceneController = () => {
         numberOfFetches.current += 1;
       }
     }, 150);
+
+    if (isReady && !canGameGetStarted) {
+      dispatchPhotoState({ type: "create-current" });
+    }
   }, [preloadFiles.length, isFinished]);
 
   const calculateScore = (type: string) => {
@@ -150,15 +142,10 @@ const useGameSceneController = () => {
     dispatchPhotoState({
       type: "create-current",
     });
-
-    gameTimer.current = setTimeout(() => {
-      onFinish();
-    }, gameDuration * 1000);
   };
 
   useEffect(() => {
     return () => {
-      stopGameTimer();
       stopFetchPreloadFiles();
     };
   }, []);
@@ -178,6 +165,8 @@ const useGameSceneController = () => {
 
   const showTheProgressBar = !showThePlayButton && !isReady;
 
+  const isFetchingDuringGame = isReady && !canGameGetStarted;
+
   return {
     score,
     currentFileName,
@@ -187,8 +176,10 @@ const useGameSceneController = () => {
     canGameGetStarted,
     showThePlayButton,
     showTheProgressBar,
+    isFetchingDuringGame,
     dispatchPhotoState,
     calculateScore,
+    onFinish,
     handleClickOnPlayButton,
   };
 };

@@ -100,24 +100,24 @@ const crawlPhotos = async () => {
                 fs.mkdirSync(photosPath);
               }
 
-              if (bufferedPhoto) {
-                sharp(bufferedPhoto)
-                  .resize(200, 200)
-                  .toFormat("jpg", { mozjpeg: true, quality: 60 })
-                  .toFile(`${photosPath}/${type}-${finalFileName}.jpg`)
-                  .then(() => {
-                    resolve(true);
-                  })
-                  .catch(() => {
-                    resolve(true);
-                  });
-              } else {
-                resolve(true);
-              }
+              sharp(bufferedPhoto)
+                .resize(200, 200)
+                .toFormat("jpg", { mozjpeg: true, quality: 60 })
+                .toFile(`${photosPath}/${type}-${finalFileName}.jpg`)
+                .then(() => {
+                  resolve(true);
+                })
+                .catch(() => {
+                  resolve(true);
+                });
             });
 
             response.on("error", (err) => {
               reject(err);
+            });
+
+            response.on("close", () => {
+              resolve(true);
             });
           })
           .end();

@@ -84,9 +84,8 @@ const imageSprites = async () => {
     withFileTypes: true,
   });
 
-  const selectablePhotos = generateSelectablePhotos(files);
+  const selectablePhotos = generateSelectablePhotos(files).filter(Boolean);
   const response = await promiseSprite(selectablePhotos);
-
   return response;
 };
 
