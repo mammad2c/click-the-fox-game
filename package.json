@@ -18,7 +18,7 @@
     "lint": "eslint ./**/*.{ts,tsx,js,jsx} --fix",
     "lint-staged": "lint-staged",
     "test:unit": "vitest",
-    "test:unit:coverage": "vitest --coverage"
+    "test:unit:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.5.1",
