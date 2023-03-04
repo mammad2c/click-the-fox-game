@@ -1,3 +1,4 @@
+import { padTo2Digits } from "@/shared/pad-to-2-digits/pad-to-2-digits";
 import { useEffect, useRef, useState } from "react";
 import { defaultCountdownPropsValue } from "./config";
 import type { CountdownProps } from "./types";
@@ -17,16 +18,13 @@ const useCountdownController = ({
 
     let totalSeconds = remainDuration;
 
-    let hours: string | number = Math.floor(totalSeconds / 3600);
-    hours = `${hours}`.padStart(2, "0");
+    const hours = padTo2Digits(Math.floor(totalSeconds / 3600));
 
     totalSeconds %= 3600;
 
-    let minutes: string | number = Math.floor(totalSeconds / 60);
-    minutes = `${minutes}`.padStart(2, "0");
+    const minutes = padTo2Digits(Math.floor(totalSeconds / 60));
 
-    let seconds: string | number = totalSeconds % 60;
-    seconds = `${seconds}`.padStart(2, "0");
+    const seconds = padTo2Digits(totalSeconds % 60);
 
     return `${hours}:${minutes}:${seconds}`;
   };

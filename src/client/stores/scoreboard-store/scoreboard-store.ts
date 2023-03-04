@@ -3,6 +3,7 @@ import { initialState } from "./config";
 import orderBy from "lodash.orderby";
 import { ScoreboardTableItem } from "./types";
 import { uuid4 } from "@/shared";
+import { padTo2Digits } from "@/shared/pad-to-2-digits/pad-to-2-digits";
 
 const rawScoreboardStore = createStore(initialState);
 
@@ -15,9 +16,9 @@ const addNewRecord = (newRecord: ScoreboardTableItem) => {
 
   const newDate = new Date();
 
-  const hours = `${newDate.getHours()}`.padStart(2, "0");
-  const minutes = `${newDate.getMinutes()}`.padStart(2, "0");
-  const seconds = `${newDate.getSeconds()}`.padStart(2, "0");
+  const hours = padTo2Digits(newDate.getHours());
+  const minutes = padTo2Digits(newDate.getMinutes());
+  const seconds = padTo2Digits(newDate.getSeconds());
 
   const date = `${newDate.toDateString()} - ${hours}:${minutes}:${seconds}`;
 
