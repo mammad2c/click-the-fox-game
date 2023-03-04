@@ -32,7 +32,7 @@ const Home = () => {
             mb={4}
             to="/game"
           >
-            Start game
+            Play
           </Button>
         </Box>
 
