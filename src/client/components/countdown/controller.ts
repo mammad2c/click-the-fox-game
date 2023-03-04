@@ -18,15 +18,15 @@ const useCountdownController = ({
     let totalSeconds = remainDuration;
 
     let hours: string | number = Math.floor(totalSeconds / 3600);
-    hours = hours < 9 ? `0${hours}` : hours;
+    hours = `${hours}`.padStart(2, "0");
 
     totalSeconds %= 3600;
 
     let minutes: string | number = Math.floor(totalSeconds / 60);
-    minutes = minutes < 9 ? `0${minutes}` : minutes;
+    minutes = `${minutes}`.padStart(2, "0");
 
     let seconds: string | number = totalSeconds % 60;
-    seconds = seconds < 9 ? `0${seconds}` : seconds;
+    seconds = `${seconds}`.padStart(2, "0");
 
     return `${hours}:${minutes}:${seconds}`;
   };
