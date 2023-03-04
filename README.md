@@ -1,6 +1,6 @@
 # Click the fox
 
-This is a game that you should click on the foxes in 30 seconds as much as you can.
+This is a game in that you should click on the foxes in 30 seconds as much as you can.
 
 ## Architecture
 
@@ -24,12 +24,12 @@ And during the gameplay, we fetch some photos ahead, to the user does not see an
 
 ## How it works
 
-When the user clicks on Play, after completing the form and entering the name, the client sends a request to route `api/photos` to take the photos that be shown to the user and he/she should click on the photos and gain score.
+When the user clicks on the Play button, after completing the form and entering the name, the client sends a request to route `api/photos` to take the photos that be shown to the user and he/she should click on the photos and gain score.
 
 The photos fetching mechanism:
 
 - At first, the `photos.controller.ts` check if we have already some photos or not (check the path of `public/photos`). The number of files is based on the `MAX_FILE_COUNT_CACHED` environment variable. If we have enough files, then we just generate an image sprite.
-- If we don't have enough files, then we run the `crawl-photos.ts` service, to fetch some photos for our application. After fetching each photo, we resize them and reduce their sizes by the `sharp` package and finally, we save the photo.
+- If we don't have enough files, then we run the `crawl-photos.ts` service, to fetch some photos for our application. After fetching each photo, we resize and optimize them with the `sharp` package and finally, we save the photo.
 - When photos are crawled, we run our `image-sprites.ts` service to generate an image sprite of already downloaded photos. Then when we create the image sprite, we send it back as a `JSON` to the client with the file URL and coordinates of each photo on our image sprite.
 
 ## How to run:
