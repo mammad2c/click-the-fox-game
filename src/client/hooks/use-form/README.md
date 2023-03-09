@@ -3,8 +3,8 @@
 We use this hook to manage a form.
 
 # Arguments
-
-- `values`: The values of the form. It should be an object.
+`formConfig` object that has these keys:
+- `values`: The values of the form. It should be an object. It is required
 - `validations`: For each value that exists inside the `values` object, you can define the validation. Validation should be an array of functions. There are some `validations` already defined inside the `validations.ts`. You can write your own validation. Also validations could be anywhere else.
 - `onSubmit`: The callback to be called when the form is submitted. This function will not be called when the form is not valid.
 
